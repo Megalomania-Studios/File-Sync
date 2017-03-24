@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Megalomania_Studios_Filesync.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,15 @@ namespace Megalomania_Studios_Filesync
         public MainWindow()
         {
             InitializeComponent();
+            if (!Settings.Default.HasBeenInstalled)
+            {
+                install();
+            }
+        }
+
+        private void install()
+        {
+            throw new NotImplementedException();
         }
     }
 }
