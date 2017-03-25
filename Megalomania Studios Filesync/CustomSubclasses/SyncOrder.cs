@@ -11,8 +11,12 @@ namespace Megalomania_Studios_Filesync.CustomSubclasses
         public string pathFrom { get; set; }
         public string pathTo { get; set; }
         public SyncRules syncSettings { get; set; }
-        public SyncOrder(string from, string to, SyncRules settings)
+        public SyncOrder(string from, string to, SyncRules settings = null)
         {
+            if (settings == null)
+            {
+                settings = SyncRules.Default;
+            }
             pathFrom = from;
             pathTo = to;
         }
