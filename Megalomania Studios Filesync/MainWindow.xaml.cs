@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,8 +27,10 @@ namespace Megalomania_Studios_Filesync
             InitializeComponent();
             //if (!Settings.Default.HasBeenInstalled)
             {
-                install();
+                //install();
             }
+            ServiceController service = new ServiceController("SyncService");
+            service.Start();
         }
 
         private void install()
