@@ -5,8 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Megalomania_Studios_Filesync"
         mc:Ignorable="d"
-        Title="Megalovania Studios File Sync" Height="350" Width="525">
+        Title="Megalomania Studios File Sync" Height="350" Width="525"
+         Background="#555">
+
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Description="File Sync"/>
+    </Window.TaskbarItemInfo>
     <Grid>
-        
+        <Label x:Name="label" Content="Ernsthaft??? Herzlich Willkommen bei File Sync von Megalomania Studios. Dies ist die&#xD;&#xA;Verwaltungsoberfläche, in der Sie das Programm einrichten und Einstellungen&#xD;&#xA;vornehmen können. Das Fenster muss für die Synchronisation nicht geöffnet sein.&#xD;&#xA;" HorizontalAlignment="Left" Margin="20,18,0,0" VerticalAlignment="Top" Width="470" Height="59" Foreground="#CCC"/>
+        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="59" Margin="10,18,0,0" VerticalAlignment="Top" Width="488"/>
+        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="86" Margin="20,221,0,0" VerticalAlignment="Top" Width="132">
+
+
+        </Border>
+        <Label x:Name="label1" Content="Das Backup ist:" Margin="42,221,386.4,0" Foreground="#CCC" HorizontalAlignment="center" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="deaktiviert" HorizontalAlignment="center" Margin="53,242,390.4,0" VerticalAlignment="Top" Width="75" Foreground="Red"/>
+        <Button x:Name="button" Content="Aktivieren" HorizontalAlignment="Left" Margin="53,281,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.137,0.521"/>
+        <WrapPanel HorizontalAlignment="Left" Height="100" Margin="245,175,0,0" VerticalAlignment="Top" Width="119"/>
+        <Separator HorizontalAlignment="Left" Height="100" Margin="31,221,0,-0.2" VerticalAlignment="Top" Width="111"/>
+
     </Grid>
 </Window>

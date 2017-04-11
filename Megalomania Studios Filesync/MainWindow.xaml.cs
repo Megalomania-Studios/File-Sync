@@ -24,7 +24,7 @@ namespace Megalomania_Studios_Filesync
         public MainWindow()
         {
             InitializeComponent();
-            if (!Settings.Default.HasBeenInstalled)
+            //if (!Settings.Default.HasBeenInstalled)
             {
                 install();
             }
@@ -32,7 +32,7 @@ namespace Megalomania_Studios_Filesync
 
         private void install()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
