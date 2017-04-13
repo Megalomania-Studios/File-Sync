@@ -5,29 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Megalomania_Studios_Filesync"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
-        Title="Megalomania Studios File Sync" Height="350" Width="525"
+        ResizeMode="CanResize"
+        Title="Megalomania Studios File Sync" 
+        
+        MaxHeight="Infinity"
+        MaxWidth="Infinity"
          Background="#555">
 
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Description="File Sync"/>
+        <TaskbarItemInfo Description="File Sync" />
     </Window.TaskbarItemInfo>
-    <Grid>
+    <Grid ShowGridLines="True" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="167*"/>
+            <ColumnDefinition Width="595*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
         <!-- Header: Hier könnten ihre Update-Notes stehen! -->
 
-        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="59" Margin="20,18,0,0" VerticalAlignment="Top" Width="478"/>
-        <Label x:Name="label" Content="Herzlich Willkommen bei File Sync von Megalomania Studios. Dies ist die&#xD;&#xA;Verwaltungsoberfläche, in der Sie das Programm einrichten und Einstellungen&#xD;&#xA;vornehmen können. Das Fenster muss für die Synchronisation nicht geöffnet sein.&#xD;&#xA;" HorizontalAlignment="Left" Margin="20,18,0,0" VerticalAlignment="Top" Width="470" Height="59" Foreground="#CCC"/>
-
-
         <!-- Box unten links, mit noch einzulesendem Backup-State und Button zum aktivieren/deaktivieren (Aufschrift soll je nach Status wechseln)-->
-        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="86" Margin="20,221,0,0" VerticalAlignment="Top" Width="132"></Border>
-        <Label x:Name="BackupstateHeader" Content="Das Backup ist:" Margin="43,221,377,0" Foreground="#CCC" HorizontalAlignment="center" VerticalAlignment="Top" Width="99"/>
-        <Label x:Name="BackupstateState" Content="deaktiviert" HorizontalAlignment="center" Margin="53,242,390.4,0" VerticalAlignment="Top" Width="75" Foreground="Chocolate"/>
-        <Button x:Name="BackupstateChange" Content="aktivieren" HorizontalAlignment="Left" Margin="50,281,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.137,0.521" Background="Chocolate" Foreground="#CCC" BorderBrush="#CCC"/>
-        <Separator HorizontalAlignment="Left" Height="100" Margin="31,221,0,-0.2" VerticalAlignment="Top" Width="111"/>
+        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="86" Margin="23,156,0,0" VerticalAlignment="Top" Width="134"/>
+
+        <Label x:Name="BackupstateHeader" Content="Das Backup ist:" Margin="40,156,29,0" Foreground="#CCC" HorizontalAlignment="left" VerticalAlignment="Top" Width="98" Height="26"/>
+        <Label x:Name="BackupstateState" Content="deaktiviert" HorizontalAlignment="left" Margin="52,174,0,0" VerticalAlignment="Top" Width="82" Foreground="Chocolate" Height="29"/>
+        <Button x:Name="BackupstateChange" Content="aktivieren" HorizontalAlignment="Left" Margin="52,208,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.137,0.521" Background="Chocolate" Foreground="#CCC" BorderBrush="#CCC" Height="20"/>
+        <Separator HorizontalAlignment="Left" Height="20" Margin="35,193,0,0" VerticalAlignment="Top" Width="110"/>
 
         <!-- In dieser Liste ist noch nix drin, wird dann aus der JSON geladen-->
-        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="213" Margin="173,94,0,0" VerticalAlignment="Top" Width="325" Background="#555" >
+        <Border BorderBrush="#CCC" BorderThickness="1"  Height="auto" Margin="10,18,10,18" Background="#555" Grid.Column="1" Width="auto" >
+
             <DataGrid x:Name="dataGrid" Margin="9,23,9,9" Background="#555" BorderBrush="#CCC" Foreground="#CCC" RowBackground="#00000000" HeadersVisibility="All"  AutoGenerateColumns="False" GridLinesVisibility="All">
                 <DataGrid.Columns>
                     <!-- Der Trennstrich ist theoretisch zu nah an der Schrift, habe das unkonventionell und nicht zufriedenstellend mit einem Leerzeichen gelöst (#Alpha) -->
@@ -45,18 +55,18 @@
             </DataGrid>
         </Border>
 
-        <Label x:Name="FolderHeader" Content="Backup-Ordner für dieses Gerät:" Margin="180,94,154,0" Foreground="#CCC" HorizontalAlignment="center" VerticalAlignment="Top" Width="185"/>
+        <Label x:Name="FolderHeader" Content="Backup-Ordner für dieses Gerät:" Margin="17,18,0,0" Foreground="#CCC" HorizontalAlignment="Stretch" Width="auto" Grid.Column="1" />
 
         <!-- Beispielsachen, die werden ja später aus unserer JSON geladen-->
-        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Left" Height="122" Margin="20,94,0,0" VerticalAlignment="Top" Width="132">
-            <ListBox x:Name="listBox1" Margin="9,23,9,9" Background="#555" BorderBrush="#CCC" Foreground="Chocolate">
+        <Border BorderBrush="#CCC" BorderThickness="1" HorizontalAlignment="Stretch" Height="122" Margin="23,19,17,0" VerticalAlignment="Top" Width="auto">
+            <ListBox x:Name="listBox1" Margin="9,23,9,9" Background="#555" BorderBrush="#CCC" Foreground="Chocolate" Width="auto">
                 <ListBoxItem Content="Sicherungsfestplatte (F://)" FontSize="8"/>
                 <Separator/>
                 <ListBoxItem Content="UsbStick (G://)" FontSize="8"/>
             </ListBox>
         </Border>
 
-        <Label x:Name="DevicesHeader" Content="Geräte:" Margin="26,94,394,0" Foreground="#CCC" HorizontalAlignment="center" VerticalAlignment="Top" Width="99"/>
+        <Label x:Name="DevicesHeader" Content="Geräte:" Margin="31,19,0,0" Foreground="#CCC" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="26"/>
 
     </Grid>
 
