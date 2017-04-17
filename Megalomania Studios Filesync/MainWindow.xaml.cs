@@ -29,8 +29,8 @@ namespace Megalomania_Studios_Filesync
             {
                 //install();
             }
-            //ServiceController service = new ServiceController("SyncService");
-            //service.Start();
+            ServiceController service = new ServiceController("SyncService");
+            service.Start();
 
         }
 
