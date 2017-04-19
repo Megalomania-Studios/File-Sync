@@ -147,10 +147,11 @@ namespace Megalomania_Studios_Filesync
         {
             
             {
-                
+
+              
 
 
-               
+
 
             }
 
@@ -160,9 +161,11 @@ namespace Megalomania_Studios_Filesync
     public class TodoItem
     {
         public string Title { get; set; }
+        
     }
-    public class itemes
+    public class Folders
     {
-        public string Title { get; set; }
+        public string OrFold { get; set; }
+        public string DestFold { get; set; }
     }
 }
