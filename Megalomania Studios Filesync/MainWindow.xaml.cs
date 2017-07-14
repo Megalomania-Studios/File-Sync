@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Management;
+using System.IO;
 
 namespace Megalomania_Studios_Filesync
 {
@@ -39,6 +41,7 @@ namespace Megalomania_Studios_Filesync
                 BackupstateChange.Content = "aktivieren";
                 return;
             }
+            Folderact();
         }
         public void Backact()
         {
@@ -68,25 +71,54 @@ namespace Megalomania_Studios_Filesync
 
         public void Deviceact ()
         {
-            //Aktualisiert die USB-Geräte (wichtig für den Start und wenn ein neues hinzugefügt wurde)
+            //Läd alle angeschlossenen Festplatten mit Name. Es geht auch mit Win32, aber so funktioniert es zuverlässiger (bzw. überhaupt erst :-)). Erkennt alles, was Diskpart als "online" ansieht, auch USB-Geräte, SDKarten (beides ausprobiert), Floppys (nicht selbst getestet :-))
 
-            List<TodoItem> items = new List<TodoItem>();
-            items.Add(new TodoItem() { Title = "Usbgerät (F://)" });
-            items.Add(new TodoItem() { Title = "Usbgerät (G://)" });
-            Devices.ItemsSource = items;
+            List<Devices> items = new List<Devices>();
+
+            DriveInfo[] laufwerke = DriveInfo.GetDrives();
+
+            foreach (DriveInfo driveinfo in laufwerke)
+            {
+                //Falls irgendwas mit irgendeinem Laufwerk nicht stimmt, beispielsweise nichterkanntes Dateiformat o.ä.
+                try
+                {
+                    items.Add(new Devices() { DLetter = " " + driveinfo.VolumeLabel, Name = driveinfo.Name });
+                }
+
+                catch (IOException ex)
+                {
+
+                    MessageBox.Show(ex.ToString());
+                }
+
+                
+                
+            }
+
+                //items.Add(new Devices() { DLetter = "F://", Name = " "+ "USB"});
+
+                //items.Add(new Devices() { DLetter = "Usbgerät (G://)" });
+                Devices.ItemsSource = items;
 
         }
 
+        public void Folderact ()
+        {
+            List<Folders> items = new List<Folders>();
+            items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
+            Folders.ItemsSource = items;
+        }
 
 
         public MainWindow()
         {
-
+            
             
             InitializeComponent();
             BackupIsActivated = false;
             //Status des Backups und Geräteliste laden und Darstellen
             ReloadState();
+            this.DataContext = fold;
             
             
 
@@ -101,6 +133,9 @@ namespace Megalomania_Studios_Filesync
             //service.Start();
 
         }
+
+        Folders fold = new Folders { OriginFolder = "Mannfred", DestinationFolder = "5", SyncTime = "Köln" };
+
 
         private void install()
         {
@@ -138,34 +173,27 @@ namespace Megalomania_Studios_Filesync
             //hier muss dann die Datenbankabfrage für das entsprechende Gerät implementiert werden
         }
 
-        private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Devices_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            MessageBox.Show(Devices.SelectedIndex.ToString());
         }
 
-        private void Devices_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        private void Folders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            {
-
-              
-
-
-
-
-            }
 
         }
     }
     //wichtig für die Geräteliste
-    public class TodoItem
+    public class Devices
     {
-        public string Title { get; set; }
+        public string DLetter { get; set; }
+        public string Name { get; set; }
         
     }
     public class Folders
     {
-        public string OrFold { get; set; }
-        public string DestFold { get; set; }
+        public string OriginFolder { get; set; }
+        public string DestinationFolder { get; set; }
+        public string SyncTime { get; set; }
     }
 }
