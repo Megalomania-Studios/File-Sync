@@ -110,8 +110,52 @@
 
                 <Label x:Name="FolderHeader" Content="Backup-Ordner für dieses Gerät:" Margin="0,0,0,0" Foreground="#CCC" HorizontalAlignment="Stretch" Width="auto" Height="auto" Grid.RowSpan="2" />
 
-                <ListBox x:Name="Folders" Margin="0,0,0,0" Background="#666" BorderBrush="#CCC" Foreground="Chocolate" Width="auto" Grid.Row="1" SelectionMode="Single" HorizontalContentAlignment="Left" Grid.ColumnSpan="1" Grid.Column="0" SelectionChanged="Folders_SelectionChanged"   >
-                    <ListBox.ItemTemplate>
+                <ListView x:Name="Folders" Margin="10,0,10,0" Background="#444" BorderBrush="#CCC" Foreground="Chocolate" Width="auto" Grid.Row="1" HorizontalContentAlignment="Left" Grid.ColumnSpan="1" Grid.Column="0" SelectionChanged="Folders_SelectionChanged">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        </Style>
+                        
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                       
+                        <GridView x:Name="FoldersGrid">
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="Chocolate"/>
+                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Setter Property="BorderBrush" Value="#CCC"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                                
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Header="Ursprungsordner" DisplayMemberBinding="{Binding OriginFolder}" Width="auto" />
+                            <GridViewColumn Header="Zielordner" DisplayMemberBinding="{Binding DestinationFolder}" Width="auto"/>
+                            <!-- Hier ein Beispiel zur weiteren Textformatierung-->
+                            <GridViewColumn Header="Synchronisationshäufigkeit" Width="auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding OriginFolder}" Width="Auto"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+
+                        </GridView>
+                    </ListView.View>
+                    
+                    
+                </ListView>
+                <!--<DataGrid x:Name="Folders" Margin="10,0,10,0" Background="#444" BorderBrush="#CCC" Foreground="Chocolate" Width="auto" Grid.Row="1" HorizontalContentAlignment="Left" Grid.ColumnSpan="1" Grid.Column="0" SelectionChanged="Folders_SelectionChanged" AutoGenerateColumns="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ursprungsordner" Binding="{Binding OriginFolder}" Width="*"/>
+                        <DataGridTextColumn Header="Zielordner" Binding="{Binding DestinationFolder}" Width="*"/>
+                        <DataGridTextColumn Header="Synchronisationshäufigkeit" Binding="{Binding SyncTime}" Width="*" />
+                    </DataGrid.Columns>
+-->
+
+                    <!--<DataGrid.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2,0,2">
                                 <Grid.ColumnDefinitions>
@@ -120,13 +164,14 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 
+
                                 <TextBlock Text="{Binding OriginFolder}" Grid.Column="0"/>
                                 <TextBlock Text="{Binding DestinationFolder}" Grid.Column="1"/>
                                 <TextBlock Text="{Binding SyncTime}" Grid.Column="2"/>
                             </Grid>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </DataGrid.ItemTemplate>
+                </DataGrid>-->
 
 
                 <!--<DataGrid x:Name="dataGrid" Margin="9,2,8,0" Background="#444" BorderBrush="#CCC" Foreground="AliceBlue" RowBackground="#00000000" HeadersVisibility="All"  AutoGenerateColumns="False" GridLinesVisibility="All" Grid.Row="1">
@@ -183,7 +228,7 @@
                 <Label x:Name="DevicesHeader" Content="Geräte:" Margin="8,-3,0,0" Foreground="#CCC" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="26" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"/>
 
                 <!-- Achtung! Die Größenapassung an den Inhalt geht zu weit! Der passt da Dinge an, die er nicht anpassen soll. Muss unbedingt geändert werden!-->
-                <ListBox x:Name="Devices" Margin="8,2,8,1.2" Background="#444" BorderBrush="#CCC" Foreground="Chocolate" Width="auto" Grid.Row="1" SelectionMode="Single" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" Grid.Column="0" SelectionChanged="Devices_SelectedIndexChanged"  >
+                <ListBox x:Name="Devices" Margin="8,2,8,1.2" Background="#444" BorderBrush="#CCC" Foreground="Chocolate" Width="auto" Grid.Row="1" SelectionMode="Single" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" Grid.Column="0" SelectionChanged="Devices_SelectionChanged"  >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2,0,2">

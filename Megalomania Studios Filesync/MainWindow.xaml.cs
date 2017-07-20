@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Management;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace Megalomania_Studios_Filesync
 {
@@ -28,6 +29,7 @@ namespace Megalomania_Studios_Filesync
         public void ReloadState ()
         {
             Deviceact();
+            Folderact();
             Backact();
             if (BackupIsActivated == true)
             {
@@ -41,7 +43,7 @@ namespace Megalomania_Studios_Filesync
                 BackupstateChange.Content = "aktivieren";
                 return;
             }
-            Folderact();
+           
         }
         public void Backact()
         {
@@ -77,6 +79,7 @@ namespace Megalomania_Studios_Filesync
 
             DriveInfo[] laufwerke = DriveInfo.GetDrives();
 
+
             foreach (DriveInfo driveinfo in laufwerke)
             {
                 //Falls irgendwas mit irgendeinem Laufwerk nicht stimmt, beispielsweise nichterkanntes Dateiformat o.ä.
@@ -104,10 +107,21 @@ namespace Megalomania_Studios_Filesync
 
         public void Folderact ()
         {
+            
+            
             List<Folders> items = new List<Folders>();
-            items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
             Folders.ItemsSource = items;
+            items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
+            items.Add(new Folders() { OriginFolder = "Origin2", DestinationFolder = "Destiny3", SyncTime = "SyncTime1" });
+
         }
+        //was das hier werden soll weiß ich noch nicht
+        /*public void Folderact()
+        {
+            ObservableCollection<string> Folder = new ObservableCollection<string>();
+        }*/
+        //public ObservableCollection<string> Folder { get; private set; }
+        //public ICollection<string> Ordner { get; private set; }
 
 
         public MainWindow()
@@ -118,7 +132,7 @@ namespace Megalomania_Studios_Filesync
             BackupIsActivated = false;
             //Status des Backups und Geräteliste laden und Darstellen
             ReloadState();
-            this.DataContext = fold;
+            //this.DataContext = fold;
             
             
 
@@ -134,7 +148,7 @@ namespace Megalomania_Studios_Filesync
 
         }
 
-        Folders fold = new Folders { OriginFolder = "Mannfred", DestinationFolder = "5", SyncTime = "Köln" };
+        //Folders fold = new Folders { OriginFolder = "Mannfred", DestinationFolder = "5", SyncTime = "Köln" };
 
 
         private void install()
@@ -167,23 +181,25 @@ namespace Megalomania_Studios_Filesync
         }
 
         public bool BackupIsActivated { get; set; }
+        
 
         private void ListBoxItem_Selected(object sender, EventArgs e)
         {
             //hier muss dann die Datenbankabfrage für das entsprechende Gerät implementiert werden
         }
 
-        private void Devices_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
+        private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MessageBox.Show(Devices.SelectedIndex.ToString());
         }
 
         private void Folders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
     }
     //wichtig für die Geräteliste
+    #region variablesinclasses
     public class Devices
     {
         public string DLetter { get; set; }
@@ -196,4 +212,5 @@ namespace Megalomania_Studios_Filesync
         public string DestinationFolder { get; set; }
         public string SyncTime { get; set; }
     }
+    #endregion
 }
