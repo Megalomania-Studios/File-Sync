@@ -17,16 +17,22 @@ using System.Windows.Shapes;
 using System.Management;
 using System.IO;
 using System.Collections.ObjectModel;
+using Path = System.IO.Path;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
+
 
 namespace Megalomania_Studios_Filesync
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
+    [Serializable()]
     public partial class MainWindow : Window
     {
         //läd den Status des Backups neu, zeigt aktiv oder inaktiv und den jeweils richtigen Button an. Läd außerdem die Geräteliste neu und SOLL auch die Ordnerliste neu laden.
-        public void ReloadState ()
+        public void ReloadState()
         {
             Deviceact();
             Folderact();
@@ -43,7 +49,7 @@ namespace Megalomania_Studios_Filesync
                 BackupstateChange.Content = "aktivieren";
                 return;
             }
-           
+
         }
         public void Backact()
         {
@@ -66,12 +72,12 @@ namespace Megalomania_Studios_Filesync
             else
                 //falls irgendwas schiefläuft
                 BackupIsActivated = false;
-                //hier und auch sonst später den (noch kommenden) Errorcodehandler (Methode, der man den Errorcode zum Fraß vorwirft) konsultieren
-                MessageBox.Show("Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.", "Fehler bei der Erkennung des Backupzustandes");
+            //hier und auch sonst später den (noch kommenden) Errorcodehandler (Methode, der man den Errorcode zum Fraß vorwirft) konsultieren
+            MessageBox.Show("Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.", "Fehler bei der Erkennung des Backupzustandes");
             return;
         }
 
-        public void Deviceact ()
+        public void Deviceact()
         {
             //Läd alle angeschlossenen Festplatten mit Name. Es geht auch mit Win32, aber so funktioniert es zuverlässiger (bzw. überhaupt erst :-)). Erkennt alles, was Diskpart als "online" ansieht, auch USB-Geräte, SDKarten (beides ausprobiert), Floppys (nicht selbst getestet :-))
 
@@ -94,25 +100,25 @@ namespace Megalomania_Studios_Filesync
                     MessageBox.Show(ex.ToString());
                 }
 
-                
-                
+
+
             }
 
-                //items.Add(new Devices() { DLetter = "F://", Name = " "+ "USB"});
+            //items.Add(new Devices() { DLetter = "F://", Name = " "+ "USB"});
 
-                //items.Add(new Devices() { DLetter = "Usbgerät (G://)" });
-                Devices.ItemsSource = items;
+            //items.Add(new Devices() { DLetter = "Usbgerät (G://)" });
+            Devices.ItemsSource = items;
 
         }
 
-        public void Folderact ()
+        public void Folderact()
         {
-            
-            
+
+
             List<Folders> items = new List<Folders>();
             Folders.ItemsSource = items;
-            items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
-            items.Add(new Folders() { OriginFolder = "Origin2", DestinationFolder = "Destiny3", SyncTime = "SyncTime1" });
+            //items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
+            //items.Add(new Folders() { OriginFolder = "Origin2", DestinationFolder = "Destiny3", SyncTime = "SyncTime1" });
 
         }
         //was das hier werden soll weiß ich noch nicht
@@ -126,15 +132,15 @@ namespace Megalomania_Studios_Filesync
 
         public MainWindow()
         {
-            
-            
+
+
             InitializeComponent();
             BackupIsActivated = false;
             //Status des Backups und Geräteliste laden und Darstellen
             ReloadState();
             //this.DataContext = fold;
-            
-            
+
+
 
 
 
@@ -158,7 +164,7 @@ namespace Megalomania_Studios_Filesync
 
         private void BackupstateChange_Click(object sender, RoutedEventArgs e)
         {
-            
+
             Backact();
             //hier muss natürlich noch der Dienst gestartet oder gestoppt werden und auch der Autostart aktiviert oder deaktiviert werden
             if (BackupIsActivated == true)
@@ -168,7 +174,7 @@ namespace Megalomania_Studios_Filesync
 
                 ReloadState();
                 return;
-                
+
             }
             if (BackupIsActivated == false)
             {
@@ -181,7 +187,7 @@ namespace Megalomania_Studios_Filesync
         }
 
         public bool BackupIsActivated { get; set; }
-        
+
 
         private void ListBoxItem_Selected(object sender, EventArgs e)
         {
@@ -190,22 +196,69 @@ namespace Megalomania_Studios_Filesync
 
         private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show(Devices.SelectedIndex.ToString());
+            
+            string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
+            //string Laufwerksbuchstabe = Devices.FindName(Devicescuritem).ToString();
+            MessageBox.Show(Devicescuritem);
+            MessageBox.Show(File.Exists(Path.Combine(Devicescuritem, "test.xml")).ToString());
+            if (!File.Exists(Path.Combine(Devicescuritem, "test.xml")))
+            {
+                return;
+            }
+            else
+            {
+                
+                List<Folders> objectstoserialise = new List<Folders>();               
+                FileStream fs = new FileStream(@"D:\test.xml", FileMode.Open); ;
+                BinaryFormatter formatter = new BinaryFormatter();
+                try
+                {
+                    objectstoserialise = (List<Folders>)formatter.Deserialize(fs);
+                    Folders.ItemsSource = objectstoserialise;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Keine Ordnerpaare gefunden");
+                }
+
+            }
         }
 
         private void Folders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+            List<Folders> objectstoserialise = new List<Folders>();
+
+            FileStream stream;
+            stream = new FileStream(@"D:\\test.xml", FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, objectstoserialise);
+            stream.Close();
+
+        }
+
+
+
+
+       
+   
     }
+
     //wichtig für die Geräteliste
     #region variablesinclasses
+    [Serializable()]
     public class Devices
     {
         public string DLetter { get; set; }
         public string Name { get; set; }
         
     }
+    [Serializable()]
     public class Folders
     {
         public string OriginFolder { get; set; }
