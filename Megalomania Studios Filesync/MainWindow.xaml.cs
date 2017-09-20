@@ -21,6 +21,8 @@ using Path = System.IO.Path;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+
 
 
 namespace Megalomania_Studios_Filesync
@@ -28,7 +30,7 @@ namespace Megalomania_Studios_Filesync
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    [Serializable()]
+    
     public partial class MainWindow : Window
     {
         //läd den Status des Backups neu, zeigt aktiv oder inaktiv und den jeweils richtigen Button an. Läd außerdem die Geräteliste neu und SOLL auch die Ordnerliste neu laden.
@@ -115,10 +117,10 @@ namespace Megalomania_Studios_Filesync
         {
 
 
-            List<Folders> items = new List<Folders>();
+            /*List<Folders> items = new List<Folders>();
             Folders.ItemsSource = items;
-            //items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
-            //items.Add(new Folders() { OriginFolder = "Origin2", DestinationFolder = "Destiny3", SyncTime = "SyncTime1" });
+            items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
+            items.Add(new Folders() { OriginFolder = "Origin2", DestinationFolder = "Destiny3", SyncTime = "SyncTime2" });*/
 
         }
         //was das hier werden soll weiß ich noch nicht
@@ -196,19 +198,31 @@ namespace Megalomania_Studios_Filesync
 
         private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
             //string Laufwerksbuchstabe = Devices.FindName(Devicescuritem).ToString();
             MessageBox.Show(Devicescuritem);
             MessageBox.Show(File.Exists(Path.Combine(Devicescuritem, "test.xml")).ToString());
             if (!File.Exists(Path.Combine(Devicescuritem, "test.xml")))
             {
+                MessageBox.Show("Errungenschaft freigeschaltet: Die M0n0t0nie des Lebens! Keine Datei zum auslesen gefunden!");
                 return;
             }
             else
             {
+
                 
-                List<Folders> objectstoserialise = new List<Folders>();               
+                string folders = File.ReadAllText(@"D:\test.txt");
+                JsonConvert.DeserializeObject<List<Folders>>(folders);
+                List<Folders> items = new List<Folders>();
+                Folders.ItemsSource = items;
+
+
+
+
+
+
+                /*List<Folders> objectstoserialize = new List<Folders>();
                 FileStream fs = new FileStream(@"D:\test.xml", FileMode.Open); ;
                 BinaryFormatter formatter = new BinaryFormatter();
                 try
@@ -219,7 +233,8 @@ namespace Megalomania_Studios_Filesync
                 catch (Exception ex)
                 {
                     MessageBox.Show("Keine Ordnerpaare gefunden");
-                }
+                }*/
+
 
             }
         }
@@ -231,38 +246,75 @@ namespace Megalomania_Studios_Filesync
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            var folders = Folders.ItemsSource;
+            var serialized = JsonConvert.SerializeObject(folders);
+            File.WriteAllText(@"D:\test.txt", serialized);
 
-            List<Folders> objectstoserialise = new List<Folders>();
 
-            FileStream stream;
-            stream = new FileStream(@"D:\\test.xml", FileMode.Create);
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(stream, objectstoserialise);
-            stream.Close();
+            /* FileStream stream;
+             stream = new FileStream(@"D:\\test.xml", FileMode.Create);
+             BinaryFormatter formatter = new BinaryFormatter();
+             formatter.Serialize(stream, objectstoserialise);
+             stream.Close();*/
+
+
+
+
+
+
+
+
+
+            //Serialisation.SerializeObject(objectstoserialise, "test.xml");
 
         }
 
 
 
 
-       
-   
+
+
     }
+
+    /*public static class Serialisation
+    {
+        public static void SerializeObject(this List<string> list, string fileName)
+        {
+            var serializer = new XmlSerializer(typeof(List<String>));
+            using (var stream = File.OpenWrite(fileName))
+            {
+                serializer.Serialize(stream, list);
+            }
+        }
+        public static void DeserializeObject(this List<string> list, string fileName)
+        {
+            var serializer = new XmlSerializer(typeof(List<String>));
+            using (var stream = File.OpenRead(fileName))
+            {
+                var other = (List<string>)(serializer.Deserialize(stream));
+                list.Clear();
+                list.AddRange(other);
+            }
+        }
+    }*/
 
     //wichtig für die Geräteliste
     #region variablesinclasses
-    [Serializable()]
+
     public class Devices
     {
         public string DLetter { get; set; }
         public string Name { get; set; }
-        
+
     }
-    [Serializable()]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Folders
     {
+        [JsonProperty(PropertyName = "origin_folder", Required = Required.Always)]
         public string OriginFolder { get; set; }
+        [JsonProperty(PropertyName = "destination_folder", Required = Required.Always)]
         public string DestinationFolder { get; set; }
+        [JsonProperty(PropertyName = "sync_time", Required = Required.Always)]
         public string SyncTime { get; set; }
     }
     #endregion
