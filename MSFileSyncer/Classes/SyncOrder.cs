@@ -14,7 +14,7 @@ namespace MSFileSyncer.Classes
         public string OriginFolder { get; set; }
         [JsonProperty(PropertyName = "destination_folder", Required = Required.Always)]
         public string DestinationFolder { get; set; }
-        [JsonProperty(PropertyName = "sync_settings")]
+        [JsonProperty(PropertyName = "sync_settings", Required = Required.Always)]
         public SyncRules Settings { get; set; }
         public SyncOrder(string from, string to, SyncRules settings = null)
         {
@@ -22,6 +22,7 @@ namespace MSFileSyncer.Classes
             {
                 settings = SyncRules.Default;
             }
+            Settings = settings;
             OriginFolder = from;
             DestinationFolder = to;
         }

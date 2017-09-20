@@ -24,6 +24,9 @@ namespace MSFileSyncer
             if (!File.Exists(syncFilePath)) return;
             var syncFileContent = File.ReadAllText(syncFilePath);
             var syncOrder = JsonConvert.DeserializeObject<SyncOrder>(syncFileContent);
+            //replace all ocurrences of $d with the current drive letter
+            syncOrder.OriginFolder = syncOrder.OriginFolder.Replace("$d", driveLetter);
+            syncOrder.DestinationFolder = syncOrder.DestinationFolder.Replace("$d", driveLetter);
 
             DeepCopy(syncOrder.OriginFolder, syncOrder.DestinationFolder);
         }
