@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MSFileSyncer.Classes
 {
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class SyncRules
     {
         /*add any order-specific settings here as fields,
