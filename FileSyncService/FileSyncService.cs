@@ -31,7 +31,7 @@ namespace FileSyncService
         private void Watcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
             var drive = e.NewEvent.Properties["DriveName"].Value;
-            File.AppendAllText("C:\\Users\\Florian\\Desktop\\test.txt", Environment.NewLine + drive);
+            //File.AppendAllText("C:\\Users\\Florian\\Desktop\\test.txt", Environment.NewLine + drive);
         }
 
         protected override void OnStart(string[] args)
