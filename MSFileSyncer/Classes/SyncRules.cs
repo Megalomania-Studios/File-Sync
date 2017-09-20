@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Megalomania_Studios_Filesync.CustomSubclasses
+namespace MSFileSyncer.Classes
 {
     public class SyncRules
     {
@@ -18,7 +18,7 @@ namespace Megalomania_Studios_Filesync.CustomSubclasses
                 return new SyncRules();
             }
         }
-        
+
         public SyncRules()
         {
             /*for every setting, assign the given value to their field*/
