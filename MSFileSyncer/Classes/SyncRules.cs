@@ -19,7 +19,7 @@ namespace MSFileSyncer.Classes
         public SyncType SyncType { get; set; }
         private const SyncType defaultSyncType = SyncType.Always;
         //The interval to sync it, required when SyncType is TimeSpan
-        [JsonProperty(PropertyName = "sync_time", Required = Required.Default)]
+        [JsonProperty(PropertyName = "sync_time", Required = Required.Default, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public TimeSpan SyncTime { get; set; }
         //When the target files should be overwritten (Always, only newer, never)
         [JsonProperty(PropertyName = "override", Required = Required.Always)]
