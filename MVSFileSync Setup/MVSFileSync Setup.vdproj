@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -29,6 +35,12 @@
         {
         "MsmKey" = "8:_A1A1E31F27355C51EFC4B3ACBF888D52"
         "OwnerKey" = "8:_113A23A0CC154FE69BB8F249F85DC1FF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A1A1E31F27355C51EFC4B3ACBF888D52"
+        "OwnerKey" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -47,6 +59,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -139,6 +157,62 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_3876D5833776435DAC8E35DEAF0369C8"
+            {
+            "Name" = "8:Primäre Ausgabe from FileSyncService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_D597F155_A318_4A85_AADB_36CC5D052548"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_54A56A51431D4E90999C1DF0714B596D"
+            {
+            "Name" = "8:Primäre Ausgabe from FileSyncService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_02F3A23B_D1F8_4F92_B90C_7E858E851FE9"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B7E9BD817F824B9E9FA7D87C0C6E9183"
+            {
+            "Name" = "8:Primäre Ausgabe from FileSyncService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_68DE4A08_19C0_4380_8F58_E0ADCCF276F5"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E9AC9D8E8DA14DD8A8C3F17C6DB736F1"
+            {
+            "Name" = "8:Primäre Ausgabe from FileSyncService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_3B7D914ADCDE4C9DA274E051C2016E82"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_442C1E33_6806_4270_9A46_D1BBCEDAFF2F"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -281,7 +355,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MVSFileSync Setup"
         "ProductCode" = "8:{B61CC6A1-5F86-4B81-90F8-90AA1BF0FC04}"
-        "PackageCode" = "8:{E1780DCF-5225-49E6-94DF-1A1067A0EBD4}"
+        "PackageCode" = "8:{7FDD83E2-85C8-482E-8B12-7440E94F7BF7}"
         "UpgradeCode" = "8:{60065D4F-AE7F-49F4-B330-8D3E241B8E96}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -294,7 +368,7 @@
         "ARPHELPLINK" = "8:"
         "Title" = "8:MVSFileSync Setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:HP Inc."
+        "ARPCONTACT" = "8:Megalomania Studios"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -831,6 +905,34 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{21D23B6E-CE04-4E97-9C2F-D1E24A923DE1}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3B7D914ADCDE4C9DA274E051C2016E82"
+            {
+            "SourcePath" = "8:..\\FileSyncService\\obj\\Debug\\FileSyncService.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F8FA193DCDEA4120B97F5657A218F045"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{A24177E0-3D38-4445-A0A2-8C723342E085}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

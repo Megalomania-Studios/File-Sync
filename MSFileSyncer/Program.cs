@@ -31,26 +31,39 @@ namespace MSFileSyncer
                 {
                     //read the content of the config file
                     var syncFileContent = sr.ReadToEnd();
-                    var syncOrder = JsonConvert.DeserializeObject<SyncOrder>(syncFileContent);
+                    var syncOrders = JsonConvert.DeserializeObject<SyncOrder[]>(syncFileContent);
 
-                    //replace all ocurrences of $d with the current drive letter
-                    syncOrder.OriginFolder = syncOrder.OriginFolder.Replace("$d", driveLetter);
-                    syncOrder.DestinationFolder = syncOrder.DestinationFolder.Replace("$d", driveLetter);
-
-                    //clear destination directory
-                    foreach (var targetDir in new DirectoryInfo(syncOrder.DestinationFolder).EnumerateDirectories())
+                    //process all sync orders
+                    foreach (var syncOrder in syncOrders)
                     {
-                        targetDir.Delete(true);
+                        ExecuteSyncOrder(driveLetter, syncOrder);
                     }
-
-                    //copy everything
-                    DeepCopy(syncOrder.OriginFolder, syncOrder.DestinationFolder);
                 }
             }
         }
 
+        private static void ExecuteSyncOrder(string driveLetter, SyncOrder syncOrder)
+        {
+            //replace all ocurrences of $d with the current drive letter
+            syncOrder.OriginFolder = syncOrder.OriginFolder.Replace("$d", driveLetter);
+            syncOrder.DestinationFolder = syncOrder.DestinationFolder.Replace("$d", driveLetter);
+
+            //creates destination folder if it doesnt exist
+            Directory.CreateDirectory(syncOrder.DestinationFolder);
+
+            //clear destination directory
+            foreach (var targetDir in new DirectoryInfo(syncOrder.DestinationFolder).EnumerateDirectories())
+            {
+                targetDir.Delete(true);
+            }
+
+            //copy everything
+            DeepCopy(syncOrder.OriginFolder, syncOrder.DestinationFolder);
+        }
+
         private static void DeepCopy(string originFolder, string destinationFolder)
         {
+            if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
             var from = new DirectoryInfo(originFolder);
             var to = new DirectoryInfo(destinationFolder);
             //check for target directory being in origin directory to prevent copying over and over

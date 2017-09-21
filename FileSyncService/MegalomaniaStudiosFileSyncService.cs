@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,12 @@ namespace FileSyncService
         ManagementEventWatcher eWatcher;
 
         private string exePath;
-        private const string regKeyPath = @"HKEY_CURRENT_USER\Software\MegalomaniaStudios\";
+        private const string regKeyPath = @"Software\MegalomaniaStudios\";
 
         public MegalomaniaStudiosFileSyncService()
         {
             InitializeComponent();
-            
+
             eWatcher = new ManagementEventWatcher();
             WqlEventQuery query = new WqlEventQuery("SELECT * FROM Win32_VolumeChangeEvent WHERE EventType = 2");
             //volume change event, 2 means device arrival, 1 is Config changed, 3 is Device removal and 4 is Docking
@@ -31,14 +32,12 @@ namespace FileSyncService
             eWatcher.EventArrived += Watcher_EventArrived;
         }
 
-        private void Log(string msg) => File.AppendAllText("C:\\Users\\Florian\\Desktop\\log.txt", msg);
+        //private void Log(string msg) => File.AppendAllText("C:\\Users\\Florian\\Desktop\\log.txt", msg);
 
         private void Watcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
-            exePath = (string)Registry.GetValue(regKeyPath, "SyncExePath", "it failed");
             var drive = e.NewEvent.Properties["DriveName"].Value.ToString();
-            File.AppendAllText("C:\\Users\\Florian\\Desktop\\log.txt", "\r\nevent arrived:exe path:" +
-                (string.IsNullOrWhiteSpace(exePath) ? "empty" : exePath));
+            //Log("\r\nevent arrived:exe path:" + (string.IsNullOrWhiteSpace(exePath) ? "empty" : exePath));
             var psi = new ProcessStartInfo
             {
                 CreateNoWindow = true,
@@ -50,12 +49,32 @@ namespace FileSyncService
                 RedirectStandardError = true
             };
             var proc = Process.Start(psi);
+            proc.WaitForExit();
+            //Log(proc.StandardOutput.ReadToEnd());
+            //Log(proc.StandardError.ReadToEnd());
         }
 
         protected override void OnStart(string[] args)
         {
             //EventLog.WriteEntry("Service started.");
-            exePath = (string)Registry.GetValue(regKeyPath, "SyncExePath", "it failed");
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
+                ManagementObjectCollection collection = searcher.Get();
+                foreach (var user in collection)
+                {
+                    NTAccount f = new NTAccount((string)user.Properties["UserName"].Value);
+                    SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                    var sid = s.ToString();
+                    var path = (string)Registry.GetValue($"HKEY_USERS\\{sid}\\{regKeyPath}", "SyncExePath", null);
+                    if (path != null) exePath = path;
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log(ex.ToString());
+                throw ex;
+            }
             eWatcher.Start();
         }
 
