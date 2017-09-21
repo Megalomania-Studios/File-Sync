@@ -169,8 +169,14 @@ namespace Megalomania_Studios_Filesync
             {
 
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
-                
-                
+
+                string dir = Path.Combine(Devicescuritem, ".mvsfilesync\\");
+                if (!Directory.Exists(dir))
+                {
+                    var dirInfo = Directory.CreateDirectory(dir);
+                    dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                }
+
                 if (!File.Exists(Path.Combine(Devicescuritem, ".mvsfilesync\\order.sync")))
                 {
                     Folders.IsEnabled = false;
