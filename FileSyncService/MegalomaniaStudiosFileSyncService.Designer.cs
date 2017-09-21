@@ -28,11 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            // 
-            // MegalomaniaStudiosFileSyncService
-            // 
-            this.ServiceName = "MegalomaniaStudiosFileSyncService";
-
+            components = new System.ComponentModel.Container();
+            this.ServiceName = "Service1";
         }
 
         #endregion

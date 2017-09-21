@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megalomania Studios Filesync", "Megalomania Studios Filesync\Megalomania Studios Filesync.csproj", "{8178A0A2-2CFB-4EF5-A1FB-F03B3C393889}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSyncService", "FileSyncService\FileSyncService.csproj", "{2FE9E646-2FDE-4BA8-ADBD-D620F3487433}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSFileSyncer", "MSFileSyncer\MSFileSyncer.csproj", "{21D23B6E-CE04-4E97-9C2F-D1E24A923DE1}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MVSFileSync Setup", "MVSFileSync Setup\MVSFileSync Setup.vdproj", "{4856FB86-8003-43C3-81D8-8442D0E53C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSyncService", "FileSyncService\FileSyncService.csproj", "{A24177E0-3D38-4445-A0A2-8C723342E085}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,16 @@ Global
 		{8178A0A2-2CFB-4EF5-A1FB-F03B3C393889}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8178A0A2-2CFB-4EF5-A1FB-F03B3C393889}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8178A0A2-2CFB-4EF5-A1FB-F03B3C393889}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FE9E646-2FDE-4BA8-ADBD-D620F3487433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FE9E646-2FDE-4BA8-ADBD-D620F3487433}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FE9E646-2FDE-4BA8-ADBD-D620F3487433}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FE9E646-2FDE-4BA8-ADBD-D620F3487433}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21D23B6E-CE04-4E97-9C2F-D1E24A923DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21D23B6E-CE04-4E97-9C2F-D1E24A923DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21D23B6E-CE04-4E97-9C2F-D1E24A923DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21D23B6E-CE04-4E97-9C2F-D1E24A923DE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4856FB86-8003-43C3-81D8-8442D0E53C39}.Debug|Any CPU.ActiveCfg = Debug
+		{4856FB86-8003-43C3-81D8-8442D0E53C39}.Release|Any CPU.ActiveCfg = Release
+		{A24177E0-3D38-4445-A0A2-8C723342E085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24177E0-3D38-4445-A0A2-8C723342E085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24177E0-3D38-4445-A0A2-8C723342E085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24177E0-3D38-4445-A0A2-8C723342E085}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
