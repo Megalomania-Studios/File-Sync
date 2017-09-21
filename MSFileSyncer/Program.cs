@@ -1,4 +1,4 @@
-﻿using MSFileSyncer.Classes;
+﻿using FileSyncLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSFileSyncer.Classes
+namespace FileSyncLibrary
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class SyncRules
