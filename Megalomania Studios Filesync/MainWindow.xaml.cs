@@ -318,7 +318,16 @@ namespace Megalomania_Studios_Filesync
             }
             else
             {
-                Foldersource.Remove(((Folders)Folders.SelectedItem));
+                var Boxresult = MessageBox.Show("Das Ordnerpaar wirklich löschen?", "Filesync", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No, MessageBoxOptions.None);
+                if (Boxresult == MessageBoxResult.Yes)
+                {
+                    Foldersource.Remove(((Folders)Folders.SelectedItem));
+                    return;
+                }
+                else
+                {
+                    return;
+                }
             }
         }
         #endregion
