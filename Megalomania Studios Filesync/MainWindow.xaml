@@ -165,7 +165,7 @@
                             </GridView.ColumnHeaderContainerStyle>
                             <GridViewColumn Header="Ursprungsordner" DisplayMemberBinding="{Binding OriginFolder}" Width="auto"/>
                             <GridViewColumn Header="Zielordner" DisplayMemberBinding="{Binding DestinationFolder}" Width="auto"/>
-                            <!-- Hier ein Beispiel zur weiteren Textformatierung-->
+                            <!--For different Text formatting-->
                             <GridViewColumn x:Name="Synct" Header="Synchronisationshäufigkeit" DisplayMemberBinding="{Binding SyncTime}">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
