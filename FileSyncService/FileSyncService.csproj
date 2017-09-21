@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2FE9E646-2FDE-4BA8-ADBD-D620F3487433}</ProjectGuid>
+    <ProjectGuid>{A24177E0-3D38-4445-A0A2-8C723342E085}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FileSyncService</RootNamespace>
     <AssemblyName>FileSyncService</AssemblyName>
@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSyncService.cs">
+    <Compile Include="MegalomaniaStudiosFileSyncService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FileSyncService.Designer.cs">
-      <DependentUpon>FileSyncService.cs</DependentUpon>
+    <Compile Include="MegalomaniaStudiosFileSyncService.Designer.cs">
+      <DependentUpon>MegalomaniaStudiosFileSyncService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -64,9 +64,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FileSyncService.resx">
-      <DependentUpon>FileSyncService.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
