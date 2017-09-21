@@ -27,14 +27,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_A1A1E31F27355C51EFC4B3ACBF888D52"
+        "OwnerKey" = "8:_113A23A0CC154FE69BB8F249F85DC1FF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_A1A1E31F27355C51EFC4B3ACBF888D52"
-        "OwnerKey" = "8:_113A23A0CC154FE69BB8F249F85DC1FF"
+        "OwnerKey" = "8:_E5204E7DE20F40C59B3C17167306745C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -45,8 +45,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A1A1E31F27355C51EFC4B3ACBF888D52"
-        "OwnerKey" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
+        "MsmKey" = "8:_E5204E7DE20F40C59B3C17167306745C"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -57,8 +57,14 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_FF6484CA06E2A1517A26F8D7D33D7BA5"
+        "OwnerKey" = "8:_E5204E7DE20F40C59B3C17167306745C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
+        "OwnerKey" = "8:_E5204E7DE20F40C59B3C17167306745C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -353,9 +359,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:MVSFileSync Setup"
+        "ProductName" = "8:MVSFileSync"
         "ProductCode" = "8:{B61CC6A1-5F86-4B81-90F8-90AA1BF0FC04}"
-        "PackageCode" = "8:{7FDD83E2-85C8-482E-8B12-7440E94F7BF7}"
+        "PackageCode" = "8:{BF76DA72-4E62-425B-A161-49B88F60C413}"
         "UpgradeCode" = "8:{60065D4F-AE7F-49F4-B330-8D3E241B8E96}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -455,7 +461,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_5483BCE848A54DB49613DA1011D51C6E"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_32693CFCE83D49838215D2C068CFB665"
             {
             "Name" = "8:FileSync"
             "Arguments" = "8:"
@@ -463,13 +469,13 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
+            "Target" = "8:_E5204E7DE20F40C59B3C17167306745C"
             "Folder" = "8:_04FD3CB66F14422087B65091667F6F16"
             "WorkingFolder" = "8:_F8FA193DCDEA4120B97F5657A218F045"
             "Icon" = "8:"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_CF2AAE8F893E45BA944CB5FB97A2CB07"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BCE929BBFDF841138C596599B5CB5E33"
             {
             "Name" = "8:FileSync"
             "Arguments" = "8:"
@@ -477,7 +483,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
+            "Target" = "8:_E5204E7DE20F40C59B3C17167306745C"
             "Folder" = "8:_4396630F821A4B03BD86DE137A7FA41C"
             "WorkingFolder" = "8:_F8FA193DCDEA4120B97F5657A218F045"
             "Icon" = "8:"
@@ -938,9 +944,9 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_7A0C6EAA42B3455F9CF1BE91CCCB879A"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E5204E7DE20F40C59B3C17167306745C"
             {
-            "SourcePath" = "8:..\\Megalomania Studios Filesync\\obj\\Release\\Megalomania Studios Filesync.exe"
+            "SourcePath" = "8:..\\Megalomania Studios Filesync\\obj\\Debug\\Megalomania Studios Filesync.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F8FA193DCDEA4120B97F5657A218F045"
@@ -958,7 +964,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
+            "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{8178A0A2-2CFB-4EF5-A1FB-F03B3C393889}"
             "ShowKeyOutput" = "11:TRUE"

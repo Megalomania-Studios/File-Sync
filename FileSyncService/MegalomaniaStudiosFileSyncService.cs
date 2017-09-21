@@ -59,11 +59,11 @@ namespace FileSyncService
             //EventLog.WriteEntry("Service started.");
             try
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_UserAccount");
                 ManagementObjectCollection collection = searcher.Get();
                 foreach (var user in collection)
                 {
-                    NTAccount f = new NTAccount((string)user.Properties["UserName"].Value);
+                    NTAccount f = new NTAccount((string)user.Properties["Name"].Value);
                     SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
                     var sid = s.ToString();
                     var path = (string)Registry.GetValue($"HKEY_USERS\\{sid}\\{regKeyPath}", "SyncExePath", null);
