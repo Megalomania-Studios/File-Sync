@@ -245,11 +245,6 @@ namespace Megalomania_Studios_Filesync
         }
         #endregion
 
-
-        #endregion
-
-        #region button_clicks
-
         #region Save button
         private void Save_Click(object sender, RoutedEventArgs e)
         {
@@ -299,6 +294,12 @@ namespace Megalomania_Studios_Filesync
                 folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
                 folderdialog.ShowDialog();
                 string destinationpath = folderdialog.SelectedPath;
+                MessageBox.Show(Path.GetPathRoot(destinationpath));
+                string d = "$d\\";
+                MessageBox.Show(d);
+
+                destinationpath = destinationpath.Replace(Path.GetPathRoot(destinationpath),d);
+                MessageBox.Show(destinationpath);
                 Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath, SyncTime = "immer" });
 
             }
