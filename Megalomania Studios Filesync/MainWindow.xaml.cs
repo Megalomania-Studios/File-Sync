@@ -23,6 +23,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Microsoft.Win32;
+using FileSyncLibrary;
 using windowsforms = System.Windows.Forms;
 
 
@@ -194,7 +195,7 @@ namespace Megalomania_Studios_Filesync
                     Folders.IsEnabled = true;
                     Foldersource.Clear();
                     string folders = File.ReadAllText(Path.Combine(Devicescuritem + ".mvsfilesync\\order.sync"));
-                    var list = JsonConvert.DeserializeObject<List<Folders>>(folders);
+                    var list = JsonConvert.DeserializeObject<List<SyncOrder>>(folders);
 
                     foreach (var f in list)
                     {
@@ -263,7 +264,12 @@ namespace Megalomania_Studios_Filesync
             {
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
                 var folders = Folders.ItemsSource;
-                var serialized = JsonConvert.SerializeObject(folders);
+                var orders = new List<SyncOrder>();
+                foreach (Folders f in folders)
+                {
+                    orders.Add(new SyncOrder(f.OriginFolder, f.DestinationFolder, SyncRules.Default));
+                }
+                var serialized = JsonConvert.SerializeObject(orders);
                 File.WriteAllText(Path.Combine(Devicescuritem + ".mvsfilesync\\order.sync"), serialized);
             }
 
@@ -287,7 +293,7 @@ namespace Megalomania_Studios_Filesync
             }
             else
             {
-
+                var driveLetter = ((Devices)Devices.SelectedItem).Name;
                 var folderdialog = new windowsforms.FolderBrowserDialog();
                 folderdialog.Description = "Ursprungsordner auswählen";
                 folderdialog.ShowNewFolderButton = false;
@@ -299,13 +305,15 @@ namespace Megalomania_Studios_Filesync
                 folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
                 folderdialog.ShowDialog();
                 string destinationpath = folderdialog.SelectedPath;
-                MessageBox.Show(Path.GetPathRoot(destinationpath));
+                MessageBox.Show(driveLetter);
                 string d = "$d\\";
                 MessageBox.Show(d);
 
-                destinationpath = destinationpath.Replace(Path.GetPathRoot(destinationpath),d);
+                destinationpath = destinationpath.Replace(driveLetter, d);
+                originpath = originpath.Replace(driveLetter, d);
                 MessageBox.Show(destinationpath);
-                Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath, SyncTime = "immer" });
+                Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath,
+                    SyncTime = SyncType.Always.ToString(), Settings = SyncRules.Default });
 
             }
 
@@ -351,9 +359,9 @@ namespace Megalomania_Studios_Filesync
 
 
         #endregion
-#endregion
 
     }
+    #endregion
 
 
     #region variables in independent classes
@@ -369,15 +377,27 @@ namespace Megalomania_Studios_Filesync
 
     //Storing the Folders (w/ JSON Serialization-Capability)
 
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    //[JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Folders
     {
-        [JsonProperty(PropertyName = "origin_folder", Required = Required.Always)]
+        //[JsonProperty(PropertyName = "origin_folder", Required = Required.Always)]
         public string OriginFolder { get; set; }
-        [JsonProperty(PropertyName = "destination_folder", Required = Required.Always)]
+        //[JsonProperty(PropertyName = "destination_folder", Required = Required.Always)]
         public string DestinationFolder { get; set; }
-        [JsonProperty(PropertyName = "sync_time", Required = Required.Always)]
+        //[JsonProperty(PropertyName = "sync_time", Required = Required.Always)]
         public string SyncTime { get; set; }
+        public SyncRules Settings { get; set; }
+
+        public static implicit operator Folders(SyncOrder order)
+        {
+            return new Folders
+            {
+                DestinationFolder = order.DestinationFolder,
+                OriginFolder = order.OriginFolder,
+                SyncTime = order.Settings.SyncType.ToString(),
+                Settings = order.Settings
+            };
+        }
     }
     #endregion
 }
