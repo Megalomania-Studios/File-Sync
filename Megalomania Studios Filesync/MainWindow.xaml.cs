@@ -34,6 +34,7 @@ namespace Megalomania_Studios_Filesync
     /// </summary>
 
     #region Main class
+
     public partial class MainWindow : Window
     {
 
@@ -65,7 +66,7 @@ namespace Megalomania_Studios_Filesync
 
         #region ReloadState (Update)
 
-        //läd den Status des Backups neu, zeigt aktiv oder inaktiv und den jeweils richtigen Button an. Läd außerdem die Geräteliste neu und SOLL auch die Ordnerliste neu laden.
+        //reloads the lists and activation state of the backup Service
         public void ReloadState()
         {
             Folders.ItemsSource = Foldersource;
@@ -91,26 +92,26 @@ namespace Megalomania_Studios_Filesync
         #region Backact (is Backup activated?)
         public void Backact()
         {
-            //hier statt Wertabfrage der schon deklarierten variablen (zu testzwecken) Abfragemechanismus einbauen
+            
             bool backacttest = BackupIsActivated;
-            //Diese If-bedingungen sollen die Aktivität des Dienstes überprüfen, momentan überprüfen sie nur die Variable, in die sie wieder reinschreiben (also ist es bisher quatsch)
+            //at the moment static (for testing purposes)
             if (backacttest == true)
             {
-                //hier check für dienst läuft/läuft nicht einfügen
+                
                 BackupIsActivated = true;
                 return;
             }
 
             if (backacttest == false)
             {
-                //hier auch
+              
                 BackupIsActivated = false;
                 return;
             }
             else
-                //falls irgendwas schiefläuft
+                // if something goes wrong, better tell its deactiveted and show a message
                 BackupIsActivated = false;
-            //hier und auch sonst später den (noch kommenden) Errorcodehandler (Methode, der man den Errorcode zum Fraß vorwirft ;-)) konsultieren
+            //in the future: errorcodehandler-method
             MessageBox.Show("Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.", "Fehler bei der Erkennung des Backupzustandes");
             return;
         }
@@ -120,16 +121,15 @@ namespace Megalomania_Studios_Filesync
 
         public void Deviceact()
         {
-            //Läd alle angeschlossenen Festplatten mit Name. Es geht auch mit Win32, aber so funktioniert es zuverlässiger (bzw. überhaupt erst :-)). Erkennt alles, was Diskpart als "online" ansieht, auch USB-Geräte, SDKarten (beides ausprobiert), Floppys (nicht selbst getestet :-))
-
+            //Loads all connected (flash)drives, sdcards, floppy discs, etc, everything that diskpart consideres "online"
             List<Devices> items = new List<Devices>();
 
-            DriveInfo[] laufwerke = DriveInfo.GetDrives();
+            DriveInfo[] drives= DriveInfo.GetDrives();
 
 
-            foreach (DriveInfo driveinfo in laufwerke)
+            foreach (DriveInfo driveinfo in drives)
             {
-                //Falls irgendwas mit irgendeinem Laufwerk nicht stimmt, beispielsweise nichterkanntes Dateiformat o.ä.
+                //if something w/ the detection goes wrong (bad drive, unformatted drive)
                 try
                 {
                     items.Add(new Devices() { DLetter = " " + driveinfo.VolumeLabel, Name = driveinfo.Name });
@@ -150,7 +150,9 @@ namespace Megalomania_Studios_Filesync
         }
         #endregion
 
-        #region  Folderact (Update of Folders based on file?)
+        #region  Folderact (Update of Folders based on file)
+
+        //Method calls Devices.Selecteditems to identify the selected device. Then loads the file and extracts the folders from it, displays them afterwards
 
         public void Folderact()
         {
@@ -167,9 +169,8 @@ namespace Megalomania_Studios_Filesync
             {
 
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
-                //string Laufwerksbuchstabe = Devices.FindName(Devicescuritem).ToString();
-                MessageBox.Show(Devicescuritem);
-                MessageBox.Show(File.Exists(Path.Combine(Devicescuritem, "test.txt")).ToString());
+                
+                
                 if (!File.Exists(Path.Combine(Devicescuritem, "test.txt")))
                 {
                     Folders.IsEnabled = false;
@@ -193,36 +194,31 @@ namespace Megalomania_Studios_Filesync
                     {
                         Foldersource.Add(f);
                     }
-
+                    
                 }
             }
         }
 
         #endregion
 
-        #region installer (work in Progress)
-
-        private void install()
-        {
-            //throw new NotImplementedException();
-        }
-
-        #endregion
+     
 
         #endregion
 
         #region Clickhandlers
 
-        #region selectionchanged methods
         #region Backupstate Button ((de)activation)
+
+        //for starting/stopping the service
+
         private void BackupstateChange_Click(object sender, RoutedEventArgs e)
         {
 
             Backact();
-            //hier muss natürlich noch der Dienst gestartet oder gestoppt werden und auch der Autostart aktiviert oder deaktiviert werden
+            
             if (BackupIsActivated == true)
             {
-                // das kommmt dann natürlich weg
+                // temporary
                 BackupIsActivated = false;
 
                 ReloadState();
@@ -231,7 +227,7 @@ namespace Megalomania_Studios_Filesync
             }
             if (BackupIsActivated == false)
             {
-                //das kommt dann natürlich weg
+                //temporary, too
                 BackupIsActivated = true;
 
                 ReloadState();
@@ -240,24 +236,21 @@ namespace Megalomania_Studios_Filesync
         }
         #endregion
 
-
-
+        #region Device selected
         private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             Folderact();
 
         }
+        #endregion
 
-        private void Folders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         #endregion
 
         #region button_clicks
 
+        #region Save button
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -275,12 +268,16 @@ namespace Megalomania_Studios_Filesync
             }
 
         }
+        #endregion
 
+        #region reload button
         private void Reload_Click(object sender, RoutedEventArgs e)
         {
             Deviceact();
         }
+        #endregion
 
+        #region add button
         private void AddNewPair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -308,6 +305,9 @@ namespace Megalomania_Studios_Filesync
 
 
         }
+        #endregion
+
+        #region remove button
         private void DeletePair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -320,10 +320,11 @@ namespace Megalomania_Studios_Filesync
                 Foldersource.Remove(((Folders)Folders.SelectedItem));
             }
         }
-
         #endregion
 
         #endregion
+
+        
 
         #region class-internal variables
 
@@ -335,12 +336,14 @@ namespace Megalomania_Studios_Filesync
 
 
         #endregion
-
+#endregion
 
     }
-    #endregion
+
 
     #region variables in independent classes
+
+    //storing the Devices (Name and Device-Letter)
 
     public class Devices
     {
@@ -348,6 +351,9 @@ namespace Megalomania_Studios_Filesync
         public string Name { get; set; }
 
     }
+
+    //Storing the Folders (w/ JSON Serialization-Capability)
+
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Folders
     {
