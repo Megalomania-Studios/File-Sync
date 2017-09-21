@@ -171,10 +171,10 @@ namespace Megalomania_Studios_Filesync
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
                 
                 
-                if (!File.Exists(Path.Combine(Devicescuritem, "test.txt")))
+                if (!File.Exists(Path.Combine(Devicescuritem, ".mvsfilesync\\order.sync")))
                 {
                     Folders.IsEnabled = false;
-                    MessageBox.Show("Errungenschaft freigeschaltet: Die M0n0t0nie des Lebens! Keine Datei zum auslesen gefunden!");
+                    
                     Foldersource.Clear();
 
                     Foldersource.Add(new Folders() { OriginFolder = "Keine Ordner gefunden" });
@@ -187,7 +187,7 @@ namespace Megalomania_Studios_Filesync
 
                     Folders.IsEnabled = true;
                     Foldersource.Clear();
-                    string folders = File.ReadAllText(Path.Combine(Devicescuritem + "test.txt"));
+                    string folders = File.ReadAllText(Path.Combine(Devicescuritem + ".mvsfilesync\\order.sync"));
                     var list = JsonConvert.DeserializeObject<List<Folders>>(folders);
 
                     foreach (var f in list)
@@ -256,10 +256,9 @@ namespace Megalomania_Studios_Filesync
             else
             {
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
-                MessageBox.Show(Devicescuritem);
                 var folders = Folders.ItemsSource;
                 var serialized = JsonConvert.SerializeObject(folders);
-                File.WriteAllText(Path.Combine(Devicescuritem + "test.txt"), serialized);
+                File.WriteAllText(Path.Combine(Devicescuritem + ".mvsfilesync\\order.sync"), serialized);
             }
 
         }
