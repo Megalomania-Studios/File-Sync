@@ -34,7 +34,6 @@ namespace Megalomania_Studios_Filesync
     /// </summary>
 
     #region Main class
-
     public partial class MainWindow : Window
     {
 
@@ -64,7 +63,7 @@ namespace Megalomania_Studios_Filesync
 
         #region Update methods
 
-            #region ReloadState (Update)
+        #region ReloadState (Update)
 
         //läd den Status des Backups neu, zeigt aktiv oder inaktiv und den jeweils richtigen Button an. Läd außerdem die Geräteliste neu und SOLL auch die Ordnerliste neu laden.
         public void ReloadState()
@@ -89,7 +88,7 @@ namespace Megalomania_Studios_Filesync
         }
         #endregion
 
-            #region Backact (is Backup activated?)
+        #region Backact (is Backup activated?)
         public void Backact()
         {
             //hier statt Wertabfrage der schon deklarierten variablen (zu testzwecken) Abfragemechanismus einbauen
@@ -111,43 +110,22 @@ namespace Megalomania_Studios_Filesync
             else
                 //falls irgendwas schiefläuft
                 BackupIsActivated = false;
-                
             //hier und auch sonst später den (noch kommenden) Errorcodehandler (Methode, der man den Errorcode zum Fraß vorwirft ;-)) konsultieren
-
             MessageBox.Show("Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.", "Fehler bei der Erkennung des Backupzustandes");
             return;
         }
         #endregion
 
-            #region Deviceact (Update of connected devices)
+        #region Deviceact (Update of connected devices)
 
         public void Deviceact()
         {
             //Läd alle angeschlossenen Festplatten mit Name. Es geht auch mit Win32, aber so funktioniert es zuverlässiger (bzw. überhaupt erst :-)). Erkennt alles, was Diskpart als "online" ansieht, auch USB-Geräte, SDKarten (beides ausprobiert), Floppys (nicht selbst getestet :-))
 
-
             List<Devices> items = new List<Devices>();
-
 
             DriveInfo[] laufwerke = DriveInfo.GetDrives();
 
-        public void Folderact()
-        {
-
-
-            List<Folders> items = new List<Folders>();
-            Folders.ItemsSource = items;
-            //items.Add(new Folders() { OriginFolder = "Origin", DestinationFolder = "Destiny", SyncTime = "SyncTime" });
-            //items.Add(new Folders() { OriginFolder = "Origin2", DestinationFolder = "Destiny3", SyncTime = "SyncTime1" });
-
-        }
-        //was das hier werden soll weiß ich noch nicht
-        /*public void Folderact()
-        {
-            ObservableCollection<string> Folder = new ObservableCollection<string>();
-        }*/
-        //public ObservableCollection<string> Folder { get; private set; }
-        //public ICollection<string> Ordner { get; private set; }
 
             foreach (DriveInfo driveinfo in laufwerke)
             {
@@ -163,7 +141,6 @@ namespace Megalomania_Studios_Filesync
                     MessageBox.Show(ex.ToString());
                 }
 
-
             }
 
             Devices.ItemsSource = items;
@@ -173,7 +150,7 @@ namespace Megalomania_Studios_Filesync
         }
         #endregion
 
-            #region  Folderact (Update of Folders based on file?)
+        #region  Folderact (Update of Folders based on file?)
 
         public void Folderact()
         {
@@ -188,7 +165,7 @@ namespace Megalomania_Studios_Filesync
             }
             else
             {
-                
+
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
                 //string Laufwerksbuchstabe = Devices.FindName(Devicescuritem).ToString();
                 MessageBox.Show(Devicescuritem);
@@ -201,7 +178,7 @@ namespace Megalomania_Studios_Filesync
 
                     Foldersource.Add(new Folders() { OriginFolder = "Keine Ordner gefunden" });
 
-                    
+
                     return;
                 }
                 else
@@ -215,17 +192,15 @@ namespace Megalomania_Studios_Filesync
                     foreach (var f in list)
                     {
                         Foldersource.Add(f);
-                    }                  
+                    }
 
                 }
             }
         }
 
-
         #endregion
 
-            #region installer (work in Progress)
-
+        #region installer (work in Progress)
 
         private void install()
         {
@@ -266,42 +241,12 @@ namespace Megalomania_Studios_Filesync
         #endregion
 
 
-        private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
 
+        private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             Folderact();
-            
-        }
 
-        private void Folders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-            string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
-            //string Laufwerksbuchstabe = Devices.FindName(Devicescuritem).ToString();
-            MessageBox.Show(Devicescuritem);
-            MessageBox.Show(File.Exists(Path.Combine(Devicescuritem, "test.xml")).ToString());
-            if (!File.Exists(Path.Combine(Devicescuritem, "test.xml")))
-            {
-                return;
-            }
-            else
-            {
-                
-                List<Folders> objectstoserialise = new List<Folders>();               
-                FileStream fs = new FileStream(@"D:\test.xml", FileMode.Open); ;
-                BinaryFormatter formatter = new BinaryFormatter();
-                try
-                {
-                    objectstoserialise = (List<Folders>)formatter.Deserialize(fs);
-                    Folders.ItemsSource = objectstoserialise;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Keine Ordnerpaare gefunden");
-                }
-
-            }
         }
 
         private void Folders_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -334,7 +279,6 @@ namespace Megalomania_Studios_Filesync
         private void Reload_Click(object sender, RoutedEventArgs e)
         {
             Deviceact();
-
         }
 
         private void AddNewPair_Click(object sender, RoutedEventArgs e)
@@ -346,7 +290,7 @@ namespace Megalomania_Studios_Filesync
             }
             else
             {
-                
+
                 var folderdialog = new windowsforms.FolderBrowserDialog();
                 folderdialog.Description = "Ursprungsordner auswählen";
                 folderdialog.ShowNewFolderButton = false;
@@ -354,17 +298,16 @@ namespace Megalomania_Studios_Filesync
                 string originpath = folderdialog.SelectedPath;
                 folderdialog.Reset();
                 folderdialog.ShowNewFolderButton = false;
-                folderdialog.Description= "Zielordner auf dem Backup-Gerät auswählen";
+                folderdialog.Description = "Zielordner auf dem Backup-Gerät auswählen";
                 folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
                 folderdialog.ShowDialog();
-                string destinationpath = folderdialog.SelectedPath;               
+                string destinationpath = folderdialog.SelectedPath;
                 Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath, SyncTime = "immer" });
 
-
             }
-       
 
-    }
+
+        }
         private void DeletePair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -393,7 +336,7 @@ namespace Megalomania_Studios_Filesync
 
         #endregion
 
-      
+
     }
     #endregion
 
@@ -404,7 +347,6 @@ namespace Megalomania_Studios_Filesync
         public string DLetter { get; set; }
         public string Name { get; set; }
 
-
     }
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Folders
@@ -414,7 +356,6 @@ namespace Megalomania_Studios_Filesync
         [JsonProperty(PropertyName = "destination_folder", Required = Required.Always)]
         public string DestinationFolder { get; set; }
         [JsonProperty(PropertyName = "sync_time", Required = Required.Always)]
-
         public string SyncTime { get; set; }
     }
     #endregion
