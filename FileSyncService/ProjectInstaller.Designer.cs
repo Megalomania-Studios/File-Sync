@@ -39,8 +39,8 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "The file syncing service of Megalomania Studios FileSync.";
-            this.serviceInstaller1.DisplayName = "File syncing service";
+            this.serviceInstaller1.Description = "Service for syncing files";
+            this.serviceInstaller1.DisplayName = "Megalomania Studios FileSync Service";
             this.serviceInstaller1.ServiceName = "MegalomaniaStudiosFileSyncService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
