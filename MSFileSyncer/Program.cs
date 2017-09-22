@@ -11,7 +11,12 @@ namespace MSFileSyncer
 {
     class Program
     {
-        private const string relativeSyncFilePath = ".mvsfilesync\\order.sync";
+        // RELEASE: Testing
+        // RELEASE: Exclude syncFileFolder
+        // TODO: Find a better way to handle files to delete (current: delete if last changed is after last sync)
+
+        private const string relativeSyncFileFolder = ".mvsfilesync\\";
+        private const string relativeSyncFilePath = relativeSyncFileFolder + "order.sync";
 
         #region Main method
         static void Main(string[] args)
@@ -79,11 +84,15 @@ namespace MSFileSyncer
         #region DeepCopy
         private static void DeepCopy(string originFolder, string destinationFolder, SyncRules settings)
         {
-            //create the directory if necessary
-            if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder/*, Directory.GetAccessControl(originFolder)*/);
             //get directory infos
             var from = new DirectoryInfo(originFolder);
             var to = new DirectoryInfo(destinationFolder);
+            //create the directory if necessary
+            if (!to.Exists)
+            {
+                to.Create();
+                to.Attributes = from.Attributes;
+            }
             //check for target directory being in origin directory to prevent copying over and over
             if (to.FullName.Contains(from.FullName)) throw new Exception("Folder nesting detected. Cancelling deepcopy.");
 
@@ -108,11 +117,16 @@ namespace MSFileSyncer
                 {
                     //allow overriding in any case
                     case DoIf.Always:
-                        fileInfo.CopyTo(filePath, true);
+                        targetFileInfo = fileInfo.CopyTo(filePath, true);
+                        targetFileInfo.Attributes = fileInfo.Attributes;
                         break;
                     //never allow overwriting
                     case DoIf.Never:
-                        if (!targetFileInfo.Exists) fileInfo.CopyTo(filePath);
+                        if (!targetFileInfo.Exists)
+                        {
+                            targetFileInfo = fileInfo.CopyTo(filePath);
+                            targetFileInfo.Attributes = fileInfo.Attributes;
+                        }
                         break;
                     //allow overwriting if the target file is older than the source file
                     case DoIf.OnlyNewer:

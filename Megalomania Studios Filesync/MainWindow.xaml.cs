@@ -33,6 +33,10 @@ namespace Megalomania_Studios_Filesync
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
+    
+    // RELEASE: Enable cancelling folder dialogs
+    // RELEASE: Activate new folder button
+    // TODO: Make sync file path constant depend on sync file folder constant
 
     #region Main class
 
@@ -140,6 +144,8 @@ namespace Megalomania_Studios_Filesync
                 {
 #if DEBUG
                     MessageBox.Show(ex.ToString());
+#else
+                    throw ex;
 #endif
                 }
 
@@ -179,7 +185,7 @@ namespace Megalomania_Studios_Filesync
                     dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 }
 
-                if (!File.Exists(Path.Combine(Devicescuritem, ".mvsfilesync\\order.sync")))
+                if (!File.Exists(Path.Combine(Devicescuritem, relativeSyncFilePath)))
                 {
                     Folders.IsEnabled = false;
                     
@@ -195,7 +201,7 @@ namespace Megalomania_Studios_Filesync
 
                     Folders.IsEnabled = true;
                     Foldersource.Clear();
-                    string folders = File.ReadAllText(Path.Combine(Devicescuritem + ".mvsfilesync\\order.sync"));
+                    string folders = File.ReadAllText(Path.Combine(Devicescuritem + relativeSyncFilePath));
                     var list = JsonConvert.DeserializeObject<List<SyncOrder>>(folders);
 
                     foreach (var f in list)
@@ -271,7 +277,12 @@ namespace Megalomania_Studios_Filesync
                     orders.Add(new SyncOrder(f.OriginFolder, f.DestinationFolder, SyncRules.Default));
                 }
                 var serialized = JsonConvert.SerializeObject(orders);
-                File.WriteAllText(Path.Combine(Devicescuritem + ".mvsfilesync\\order.sync"), serialized);
+                if (!Directory.Exists(Path.Combine(Devicescuritem, relativeSyncFileFolder)))
+                {
+                    var di = Directory.CreateDirectory(Path.Combine(Devicescuritem, relativeSyncFileFolder));
+                    di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                }
+                File.WriteAllText(Path.Combine(Devicescuritem, relativeSyncFilePath), serialized);
             }
 
         }
@@ -352,15 +363,15 @@ namespace Megalomania_Studios_Filesync
         private ObservableCollection<Folders> Foldersource = new ObservableCollection<Folders>();
 
         public bool BackupIsActivated { get; set; }
+        
+        private const string relativeSyncFilePath = ".mvsfilesync\\order.sync";
 
-
-
+        private const string relativeSyncFileFolder = ".mvsfilesync\\";
 
         #endregion
 
     }
     #endregion
-
 
     #region variables in independent classes
 
