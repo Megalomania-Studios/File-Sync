@@ -138,8 +138,9 @@ namespace Megalomania_Studios_Filesync
 
                 catch (IOException ex)
                 {
-
+#if DEBUG
                     MessageBox.Show(ex.ToString());
+#endif
                 }
 
             }
@@ -305,13 +306,10 @@ namespace Megalomania_Studios_Filesync
                 folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
                 folderdialog.ShowDialog();
                 string destinationpath = folderdialog.SelectedPath;
-                MessageBox.Show(driveLetter);
                 string d = "$d\\";
-                MessageBox.Show(d);
 
                 destinationpath = destinationpath.Replace(driveLetter, d);
                 originpath = originpath.Replace(driveLetter, d);
-                MessageBox.Show(destinationpath);
                 Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath,
                     SyncTime = SyncType.Always.ToString(), Settings = SyncRules.Default });
 

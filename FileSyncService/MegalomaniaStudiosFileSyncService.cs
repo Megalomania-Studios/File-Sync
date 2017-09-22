@@ -32,7 +32,10 @@ namespace FileSyncService
             eWatcher.EventArrived += Watcher_EventArrived;
         }
 
-        //private void Log(string msg) => File.AppendAllText("C:\\Users\\Florian\\Desktop\\log.txt", msg);
+#if DEBUG
+        private void Log(string msg) => File.AppendAllText(
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MegalomaniaStudios\\log.txt"), msg);
+#endif
 
         private void Watcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
@@ -72,7 +75,9 @@ namespace FileSyncService
             }
             catch (Exception ex)
             {
-                //Log(ex.ToString());
+#if DEBUG
+                Log(ex.ToString());
+#endif
                 throw ex;
             }
             eWatcher.Start();
