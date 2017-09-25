@@ -12,18 +12,19 @@ namespace MSFileSyncer
     class Program
     {
         // RELEASE: Testing
-        // RELEASE: Exclude syncFileFolder
         // TODO: Find a better way to handle files to delete (current: delete if last changed is after last sync)
 
         private const string relativeSyncFileFolder = ".mvsfilesync\\";
         private const string relativeSyncFilePath = relativeSyncFileFolder + "order.sync";
+
+        private static string driveLetter = "";
 
         #region Main method
         static void Main(string[] args)
         {
             //Drive letter should be first argument
             if (args.Length < 1) throw new ArgumentOutOfRangeException("drive", "No drive letter supplied.");
-            var driveLetter = args[0];
+            driveLetter = args[0];
 
             //Get sync info file and deserialize it
             var syncFilePath = Path.Combine(driveLetter, relativeSyncFilePath);
@@ -84,6 +85,7 @@ namespace MSFileSyncer
         #region DeepCopy
         private static void DeepCopy(string originFolder, string destinationFolder, SyncRules settings)
         {
+            if (originFolder == Path.Combine(driveLetter, relativeSyncFileFolder)) return;
             //get directory infos
             var from = new DirectoryInfo(originFolder);
             var to = new DirectoryInfo(destinationFolder);

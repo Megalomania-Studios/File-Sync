@@ -34,14 +34,16 @@ namespace Megalomania_Studios_Filesync
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     
-    // RELEASE: Enable cancelling folder dialogs
-    // RELEASE: Activate new folder button
+    // TODO: Custom title bar
+    // TODO: Custom message boxes
     // TODO: Make sync file path constant depend on sync file folder constant
 
     #region Main class
 
     public partial class MainWindow : Window
     {
+
+        private const string noFoldersFound = "Keine Ordner gefunden";
 
         #region Constructor
 
@@ -62,7 +64,6 @@ namespace Megalomania_Studios_Filesync
             }
             //ServiceController service = new ServiceController("SyncService");
             //service.Start();
-
         }
 
         #endregion
@@ -191,7 +192,7 @@ namespace Megalomania_Studios_Filesync
                     
                     Foldersource.Clear();
 
-                    Foldersource.Add(new Folders() { OriginFolder = "Keine Ordner gefunden" });
+                    Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
 
 
                     return;
@@ -274,6 +275,7 @@ namespace Megalomania_Studios_Filesync
                 var orders = new List<SyncOrder>();
                 foreach (Folders f in folders)
                 {
+                    if (f.OriginFolder == null || f.DestinationFolder == null) continue;
                     orders.Add(new SyncOrder(f.OriginFolder, f.DestinationFolder, SyncRules.Default));
                 }
                 var serialized = JsonConvert.SerializeObject(orders);
@@ -306,16 +308,18 @@ namespace Megalomania_Studios_Filesync
             else
             {
                 var driveLetter = ((Devices)Devices.SelectedItem).Name;
-                var folderdialog = new windowsforms.FolderBrowserDialog();
-                folderdialog.Description = "Ursprungsordner auswählen";
-                folderdialog.ShowNewFolderButton = false;
-                folderdialog.ShowDialog();
+                var folderdialog = new windowsforms.FolderBrowserDialog
+                {
+                    Description = "Ursprungsordner auswählen"
+                };
+                var result = folderdialog.ShowDialog();
+                if (result != windowsforms.DialogResult.OK) return;
                 string originpath = folderdialog.SelectedPath;
                 folderdialog.Reset();
-                folderdialog.ShowNewFolderButton = false;
                 folderdialog.Description = "Zielordner auf dem Backup-Gerät auswählen";
                 folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
-                folderdialog.ShowDialog();
+                result = folderdialog.ShowDialog();
+                if (result != windowsforms.DialogResult.OK) return;
                 string destinationpath = folderdialog.SelectedPath;
                 string d = "$d\\";
 
@@ -323,7 +327,8 @@ namespace Megalomania_Studios_Filesync
                 originpath = originpath.Replace(driveLetter, d);
                 Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath,
                     SyncTime = SyncType.Always.ToString(), Settings = SyncRules.Default });
-
+                var message = Foldersource.FirstOrDefault((x) => x.OriginFolder == noFoldersFound);
+                if (message != null) Foldersource.Remove(message);
             }
 
 
@@ -344,6 +349,7 @@ namespace Megalomania_Studios_Filesync
                 if (Boxresult == MessageBoxResult.Yes)
                 {
                     Foldersource.Remove(((Folders)Folders.SelectedItem));
+                    Folderact();
                     return;
                 }
                 else
