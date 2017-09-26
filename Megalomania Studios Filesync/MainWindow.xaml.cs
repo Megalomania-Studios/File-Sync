@@ -193,34 +193,62 @@ namespace Megalomania_Studios_Filesync
                     Foldersource.Clear();
 
                     Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
-
-
+                    
                     return;
                 }
                 else
                 {
 
-                    Folders.IsEnabled = true;
+                    
+
                     Foldersource.Clear();
                     string folders = File.ReadAllText(Path.Combine(Devicescuritem + relativeSyncFilePath));
-                    var list = JsonConvert.DeserializeObject<List<SyncOrder>>(folders);
 
-                    foreach (var f in list)
+                    if (folders == "[]")
                     {
-                        Foldersource.Add(f);
+                        Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
+                        Folders.IsEnabled = false;
+                        return;
+
                     }
-                    
+
+                    else
+                    {
+                        Folders.IsEnabled = true;
+
+                        var list = JsonConvert.DeserializeObject<List<SyncOrder>>(folders);
+
+                        foreach (var f in list)
+                        {
+                            Foldersource.Add(f);
+                        }
+                        return;
+                    }
                 }
             }
         }
 
         #endregion
 
-     
+
 
         #endregion
 
         #region Clickhandlers
+
+        #region Closebutton
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+        #endregion
+
+        #region Minimizebutton
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+        #endregion
 
         #region Backupstate Button ((de)activation)
 
@@ -285,6 +313,7 @@ namespace Megalomania_Studios_Filesync
                     di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 }
                 File.WriteAllText(Path.Combine(Devicescuritem, relativeSyncFilePath), serialized);
+                Folderact();
             }
 
         }
@@ -329,6 +358,8 @@ namespace Megalomania_Studios_Filesync
                     SyncTime = SyncType.Always.ToString(), Settings = SyncRules.Default });
                 var message = Foldersource.FirstOrDefault((x) => x.OriginFolder == noFoldersFound);
                 if (message != null) Foldersource.Remove(message);
+                Folders.IsEnabled = true;
+                
             }
 
 
@@ -349,16 +380,18 @@ namespace Megalomania_Studios_Filesync
                 if (Boxresult == MessageBoxResult.Yes)
                 {
                     Foldersource.Remove(((Folders)Folders.SelectedItem));
-                    Folderact();
+                    
+                    
                     return;
                 }
                 else
-                {
+                {                    
                     return;
                 }
             }
         }
         #endregion
+
 
         #endregion
 
@@ -375,6 +408,7 @@ namespace Megalomania_Studios_Filesync
         private const string relativeSyncFileFolder = ".mvsfilesync\\";
 
         #endregion
+
 
     }
     #endregion
