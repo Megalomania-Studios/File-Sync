@@ -34,7 +34,7 @@ namespace Megalomania_Studios_Filesync
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     
-    // TODO: Custom title bar
+    
     // TODO: Custom message boxes
     // TODO: Make sync file path constant depend on sync file folder constant
 
@@ -50,7 +50,9 @@ namespace Megalomania_Studios_Filesync
         public MainWindow()
         {
 
-
+            
+            
+            
             InitializeComponent();
             BackupIsActivated = false;
             //Status des Backups und Geräteliste laden und Darstellen
@@ -64,6 +66,26 @@ namespace Megalomania_Studios_Filesync
             }
             //ServiceController service = new ServiceController("SyncService");
             //service.Start();
+
+            //string ss = "net start MegalomaniaStudiosFileSyncService";
+            string header = "h";
+            string message = "mess";
+
+            //CustomMessageBox.header = "messageheader";
+            //CMbox.message = "content!!!";
+            //CMbox.answer = Answer.OK;
+            CustomMessageBox CMbox = new CustomMessageBox(header, message, "Abbruch", "Nein", "Ja");
+            CMbox.ShowDialog();
+
+            if (CMbox.DialogResult == true)
+            {
+                CustomMessageBox CMbox2 = new CustomMessageBox(header, message, "Abbruch", "Nein", "Ja");
+                CMbox2.ShowDialog();
+            }
+            else
+            {
+
+            }
         }
 
         #endregion
@@ -230,6 +252,15 @@ namespace Megalomania_Studios_Filesync
 
         #endregion
 
+        #region isfoldersactivated
+
+        void test()
+        {
+            //Folders.Background = doesnotworkyet
+
+        }
+
+        #endregion
 
 
         #endregion
@@ -253,42 +284,69 @@ namespace Megalomania_Studios_Filesync
         #region Backupstate Button ((de)activation)
 
         //for starting/stopping the service
-
+        
         private void BackupstateChange_Click(object sender, RoutedEventArgs e)
         {
 
             Backact();
             
-            if (BackupIsActivated == true)
+            if (BackupIsActivated == false)
             {
-                // temporary
-                BackupIsActivated = false;
+                ServiceController service = new ServiceController("MegalomaniaStudiosFileSyncService");
+                try
+                {
+                    TimeSpan timeout = TimeSpan.FromMilliseconds(20000);
+
+                    service.Start();
+                    service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+                    BackupIsActivated = true;
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    throw ex;
+#else
+                    MessageBox.Show("Fehler bei der Dienstaktivierung");
+
+#endif
+                }
 
                 ReloadState();
                 return;
 
             }
-            if (BackupIsActivated == false)
+            if (BackupIsActivated == true)
             {
-                //temporary, too
-                BackupIsActivated = true;
+                
+       
+            ServiceController service = new ServiceController("MegalomaniaStudiosFileSyncService");
+            try
+            {
+                TimeSpan timeout = TimeSpan.FromMilliseconds(20000);
 
-                ReloadState();
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+            }
+            catch
+            {
+                    MessageBox.Show("fehler bei der Dienstaktivierung");
+                }
+        
                 return;
             }
         }
-        #endregion
+#endregion
 
-        #region Device selected
+#region Device selected
         private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             Folderact();
 
         }
-        #endregion
+#endregion
 
-        #region Save button
+#region Save button
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -317,16 +375,16 @@ namespace Megalomania_Studios_Filesync
             }
 
         }
-        #endregion
+#endregion
 
-        #region reload button
+#region reload button
         private void Reload_Click(object sender, RoutedEventArgs e)
         {
             Deviceact();
         }
-        #endregion
+#endregion
 
-        #region add button
+#region add button
         private void AddNewPair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -364,9 +422,9 @@ namespace Megalomania_Studios_Filesync
 
 
         }
-        #endregion
+#endregion
 
-        #region remove button
+#region remove button
         private void DeletePair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -390,14 +448,14 @@ namespace Megalomania_Studios_Filesync
                 }
             }
         }
-        #endregion
+#endregion
 
 
-        #endregion
+#endregion
 
         
 
-        #region class-internal variables
+#region class-internal variables
 
         private ObservableCollection<Folders> Foldersource = new ObservableCollection<Folders>();
 
@@ -407,13 +465,16 @@ namespace Megalomania_Studios_Filesync
 
         private const string relativeSyncFileFolder = ".mvsfilesync\\";
 
-        #endregion
+        public bool Foldersactivated = false;
+
+        
+#endregion
 
 
     }
-    #endregion
+#endregion
 
-    #region variables in independent classes
+#region variables in independent classes
 
     //storing the Devices (Name and Device-Letter)
 
@@ -448,5 +509,6 @@ namespace Megalomania_Studios_Filesync
             };
         }
     }
-    #endregion
+ 
+#endregion
 }
