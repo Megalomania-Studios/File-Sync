@@ -63,6 +63,7 @@ namespace Megalomania_Studios_Filesync
         private void Bottomleft_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = null;
+            this.Close();
         }
 
 

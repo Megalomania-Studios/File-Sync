@@ -77,15 +77,7 @@ namespace Megalomania_Studios_Filesync
             CustomMessageBox CMbox = new CustomMessageBox(header, message, "Abbruch", "Nein", "Ja");
             CMbox.ShowDialog();
 
-            if (CMbox.DialogResult == true)
-            {
-                CustomMessageBox CMbox2 = new CustomMessageBox(header, message, "Abbruch", "Nein", "Ja");
-                CMbox2.ShowDialog();
-            }
-            else
-            {
-
-            }
+           
         }
 
         #endregion
