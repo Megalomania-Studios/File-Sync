@@ -328,8 +328,8 @@ namespace Megalomania_Studios_Filesync
             }
         }
 #endregion
-
-#region Device selected
+    
+        #region Device selected
         private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -337,8 +337,8 @@ namespace Megalomania_Studios_Filesync
 
         }
 #endregion
-
-#region Save button
+    
+        #region Save button
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -369,14 +369,14 @@ namespace Megalomania_Studios_Filesync
         }
 #endregion
 
-#region reload button
-        private void Reload_Click(object sender, RoutedEventArgs e)
-        {
-            Deviceact();
-        }
-#endregion
-
-#region add button
+        #region reload button
+            private void Reload_Click(object sender, RoutedEventArgs e)
+            {
+                Deviceact();
+            }
+    #endregion
+    
+        #region add button
         private void AddNewPair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -415,8 +415,8 @@ namespace Megalomania_Studios_Filesync
 
         }
 #endregion
-
-#region remove button
+    
+        #region remove button
         private void DeletePair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -440,14 +440,25 @@ namespace Megalomania_Studios_Filesync
                 }
             }
         }
-#endregion
+        #endregion
+    
+        #region Drag Window
+
+        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try { this.DragMove(); }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        #endregion
+
+        #endregion
 
 
-#endregion
 
-        
-
-#region class-internal variables
+        #region class-internal variables
 
         private ObservableCollection<Folders> Foldersource = new ObservableCollection<Folders>();
 
@@ -459,14 +470,17 @@ namespace Megalomania_Studios_Filesync
 
         public bool Foldersactivated = false;
 
+
+
+        #endregion
+
+       
+
         
-#endregion
-
-
     }
-#endregion
+    #endregion
 
-#region variables in independent classes
+    #region variables in independent classes
 
     //storing the Devices (Name and Device-Letter)
 

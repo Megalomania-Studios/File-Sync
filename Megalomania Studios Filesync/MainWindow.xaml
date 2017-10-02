@@ -11,8 +11,14 @@
         MaxHeight="Infinity"
         MaxWidth="Infinity"
         Background="#444" 
-        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="False"
+        
         >
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="0"
+            ResizeBorderThickness="5"/>
+    </WindowChrome.WindowChrome>
 
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo/>
@@ -147,12 +153,15 @@
         </Grid.Resources>
 
         <!--Application Buttons-->
-        <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,7,0" Orientation="Horizontal">
-            <Button x:Name="MinimizeButton" Content="-" Style="{StaticResource ResourceKey=MenuButtonStyle}" Margin="0,0,10,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" FontWeight="ExtraBold" Click="MinimizeButton_Click"/>
-            <Button x:Name="CloseButton" Content="X" Style="{StaticResource ResourceKey=MenuButtonStyle}" Click="CloseButton_Click"/>
+        <Grid x:Name="Header" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" MouseLeftButtonDown="Header_MouseLeftButtonDown">
+            <StackPanel HorizontalAlignment="Right" Margin="0,0,7,0" Orientation="Horizontal">
+                <Label Width="700px" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" MouseLeftButtonDown="Header_MouseLeftButtonDown"/>
+                <Button x:Name="MinimizeButton" Content="-" Style="{StaticResource ResourceKey=MenuButtonStyle}" Margin="0,0,10,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Stretch" FontWeight="ExtraBold" Click="MinimizeButton_Click"/>
+                <Button x:Name="CloseButton" Content="X" Style="{StaticResource ResourceKey=MenuButtonStyle}" Click="CloseButton_Click"/>
 
 
         </StackPanel>
+        </Grid>
 
         <!-- Box for activation/deactivation of backup process (Service)-->
         <Border BorderThickness="1" HorizontalAlignment="Stretch" Height="auto" MinHeight="35" Margin="5,0,0,3" VerticalAlignment="Bottom" Width="auto" Background="#333" Grid.Row="1">
