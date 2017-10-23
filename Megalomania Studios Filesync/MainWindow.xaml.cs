@@ -37,7 +37,6 @@ namespace Megalomania_Studios_Filesync
     /// </summary>
     
     
-    // TODO: Custom message boxes
     // TODO: Make sync file path constant depend on sync file folder constant
 
     #region Main class
@@ -52,7 +51,7 @@ namespace Megalomania_Studios_Filesync
         public MainWindow()
         {
 
-            
+            BackupIsActivated = null;
             
             
             InitializeComponent();
@@ -86,18 +85,7 @@ namespace Megalomania_Studios_Filesync
             Deviceact();
             Folderact();
             Backact();
-            if (BackupIsActivated == true)
-            {
-                BackupstateState.Content = "aktiviert";
-                BackupstateChange.Content = "deaktivieren";
-                return;
-            }
-            if (BackupIsActivated == false)
-            {
-                BackupstateState.Content = "deaktiviert";
-                BackupstateChange.Content = "aktivieren";
-                return;
-            }
+            
 
         }
         #endregion
@@ -105,29 +93,34 @@ namespace Megalomania_Studios_Filesync
         #region Backact (is Backup activated?)
         public void Backact()
         {
-            
-            bool backacttest = BackupIsActivated;
-            //at the moment static (for testing purposes)
-            if (backacttest == true)
-            {
-                
-                BackupIsActivated = true;
-                return;
-            }
 
-            if (backacttest == false)
+            
+            ServiceController sc = new ServiceController("MegalomaniaStudiosFileSyncService");
+            string isactivated = sc.Status.ToString();
+
+            if (isactivated == "Running")
             {
-              
-                BackupIsActivated = false;
-                return;
+                BackupIsActivated = true;
+                BackupstateState.Content = "aktiviert";
+                BackupstateChange.Content = "deaktivieren";
             }
             else
-                // if something goes wrong, better tell its deactiveted and show a message
-                BackupIsActivated = false;
-            //in the future: errorcodehandler-method
-            CustomMessageBox CmBox = new CustomMessageBox("Fehler bei der Erkennung des Backupzustandes", "Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.");
+            {
+                if (isactivated == "Stopped")
+                {
+                    BackupIsActivated = false;
+                    BackupstateState.Content = "deaktivert";
+                    BackupstateChange.Content = "aktivieren";
+                }
+                else
+                {
+                    BackupstateState.Content = "Fehler";
+                    CustomMessageBox cmb = new CustomMessageBox("Fehler", "Aktuell gemeldeter Dienststatus: " + isactivated + "\nVersuchen Sie einen Neustart des Computers. Sollten sie den FileSync-Dienst manuell deaktiviert haben, aktivieren Sie ihn bitte.", "OK");
+                    cmb.ShowDialog();
+
+                }
+            }
             
-            return;
         }
         #endregion
 
@@ -241,17 +234,6 @@ namespace Megalomania_Studios_Filesync
 
         #endregion
 
-        #region isfoldersactivated
-
-        void test()
-        {
-            //Folders.Background = doesnotworkyet
-
-        }
-
-        #endregion
-
-
         #endregion
 
         #region Clickhandlers
@@ -336,20 +318,22 @@ namespace Megalomania_Studios_Filesync
                     TimeSpan timeout = TimeSpan.FromMilliseconds(20000);
 
                     service.Start();
-                    service.WaitForStatus(ServiceControllerStatus.Running, timeout);
-                    BackupIsActivated = true;
+                    service.WaitForStatus(ServiceControllerStatus.Running, timeout);                  
+                    Backact();
                 }
                 catch (Exception ex)
                 {
 #if DEBUG
                     throw ex;
 #else
-                    MessageBox.Show("Fehler bei der Dienstaktivierung");
+                    CustomMessageBox cmb = new CustomMessageBox("Fehler", "Fehler bei der Dienstaktivierung. Der Dienst konnte nicht gestartet/gestoppt werden. Diese Funktion befindet sich noch in der Entwicklung.", "OK");
+                    cmb.ShowDialog();
+                    
 
 #endif
                 }
 
-                ReloadState();
+                
                 return;
 
             }
@@ -364,13 +348,18 @@ namespace Megalomania_Studios_Filesync
 
                     service.Stop();
                     service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                    MessageBox.Show(service.Status.ToString());
+                    Backact();
                 }
-                catch
+                catch(Exception ex)
                 {
+#if DEBUG   
+                    throw ex;
+#else
                     CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Fehler bei der Dienstaktivierung","OK");
                     Cmb.ShowDialog();
                     MessageBox.Show("fehler bei der Dienstaktivierung");
-
+#endif
                 }
         
                 return;
@@ -378,7 +367,7 @@ namespace Megalomania_Studios_Filesync
         }
 #endregion
     
-        #region Device selected
+#region Device selected
         private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -387,7 +376,7 @@ namespace Megalomania_Studios_Filesync
         }
 #endregion
     
-        #region Save button
+#region Save button
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -419,14 +408,14 @@ namespace Megalomania_Studios_Filesync
         }
 #endregion
 
-        #region reload button
+#region reload button
             private void Reload_Click(object sender, RoutedEventArgs e)
             {
                 Deviceact();
             }
-    #endregion
+#endregion
     
-        #region add button
+#region add button
         private void AddNewPair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -467,7 +456,7 @@ namespace Megalomania_Studios_Filesync
         }
 #endregion
     
-        #region remove button
+#region remove button
 
         private void DeletePair_Click(object sender, RoutedEventArgs e)
         {
@@ -495,9 +484,9 @@ namespace Megalomania_Studios_Filesync
                 
             }
         }
-        #endregion
+#endregion
     
-        #region Drag Window
+#region Drag Window
 
         private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -507,19 +496,17 @@ namespace Megalomania_Studios_Filesync
 
             }
         }
-        #endregion
+#endregion
 
         
 
-        #endregion
+#endregion
 
-
-
-        #region class-internal variables
+        #region Data Fields
 
         private ObservableCollection<Folders> Foldersource = new ObservableCollection<Folders>();
 
-        public bool BackupIsActivated { get; set; }
+        public bool? BackupIsActivated;
         
         private const string relativeSyncFilePath = ".mvsfilesync\\order.sync";
 
@@ -528,16 +515,11 @@ namespace Megalomania_Studios_Filesync
         public bool Foldersactivated = false;
 
 
-
-
-
-
-
-        #endregion
+#endregion
 
        
     }
-    #endregion
+#endregion
 
     #region variables in independent classes
 
