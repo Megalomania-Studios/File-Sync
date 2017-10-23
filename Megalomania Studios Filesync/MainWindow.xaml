@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         ResizeMode="CanResize"
         Title="Megalomania Studios File Sync" 
-       
+        MinHeight="400"
+        MinWidth="800"
         MaxHeight="Infinity"
         MaxWidth="Infinity"
         Background="#444" 
@@ -135,8 +136,8 @@
 
     <Grid ShowGridLines="False" HorizontalAlignment="Stretch" Width="auto">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="167*"/>
-            <ColumnDefinition Width="595*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="15*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
 

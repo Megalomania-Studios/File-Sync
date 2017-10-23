@@ -58,29 +58,19 @@ namespace Megalomania_Studios_Filesync
             InitializeComponent();
             Headerlable.Content = "MVS FileSync";
             BackupIsActivated = false;
-            //Status des Backups und Geräteliste laden und Darstellen
+            //load state of the backup and the devices list. Draw it.
+            
             ReloadState();
             //this.DataContext = fold;
 
-
+            // not implemented yet
             //if (!Settings.Default.HasBeenInstalled)
             {
                 //install();
             }
             //ServiceController service = new ServiceController("SyncService");
             //service.Start();
-
-            //string ss = "net start MegalomaniaStudiosFileSyncService";
-            string header = "h";
-            string message = "mess";
-
-            //CustomMessageBox.header = "messageheader";
-            //CMbox.message = "content!!!";
-            //CMbox.answer = Answer.OK;
-            CustomMessageBox CMbox = new CustomMessageBox(header, message,"OK","Abbruch");
-            CMbox.ShowDialog();
-
-           
+                     
         }
 
         #endregion
