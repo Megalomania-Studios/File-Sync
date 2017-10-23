@@ -12,11 +12,13 @@
         MaxWidth="Infinity"
         Background="#444" 
         WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="False"
+        Padding="5"
         
         >
     <WindowChrome.WindowChrome>
         <WindowChrome
             CaptionHeight="0"
+            
             ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
@@ -153,10 +155,17 @@
         </Grid.Resources>
 
         <!--Application Buttons-->
+        <Label x:Name="Headerlable" Width="auto" Grid.ColumnSpan="2" Content="Title" Foreground="#CCC" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" MouseLeftButtonDown="Header_MouseLeftButtonDown"/>
         <Grid x:Name="Header" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" MouseLeftButtonDown="Header_MouseLeftButtonDown">
+            
+            
             <StackPanel HorizontalAlignment="Right" Margin="0,0,7,0" Orientation="Horizontal">
-                <Label Width="700px" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" MouseLeftButtonDown="Header_MouseLeftButtonDown"/>
                 <Button x:Name="MinimizeButton" Content="-" Style="{StaticResource ResourceKey=MenuButtonStyle}" Margin="0,0,10,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Stretch" FontWeight="ExtraBold" Click="MinimizeButton_Click"/>
+                <Button x:Name="MaximizeButton" Style="{StaticResource ResourceKey=MenuButtonStyle}" Margin="0,0,10,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Stretch" FontWeight="ExtraBold" Click="MaximizeButton_Click">
+                    <Button.Content>
+                        <Rectangle x:Name="Maximizerectangle" Width="12" Height="10" Stroke="#CCC"/>
+                    </Button.Content>
+                </Button>
                 <Button x:Name="CloseButton" Content="X" Style="{StaticResource ResourceKey=MenuButtonStyle}" Click="CloseButton_Click"/>
 
 

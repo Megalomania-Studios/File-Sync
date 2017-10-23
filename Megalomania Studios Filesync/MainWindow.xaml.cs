@@ -1,4 +1,6 @@
-﻿using Megalomania_Studios_Filesync.Properties;
+﻿#region using
+
+using Megalomania_Studios_Filesync.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,7 @@ using Microsoft.Win32;
 using FileSyncLibrary;
 using windowsforms = System.Windows.Forms;
 
-
+#endregion
 
 namespace Megalomania_Studios_Filesync
 {
@@ -54,6 +56,7 @@ namespace Megalomania_Studios_Filesync
             
             
             InitializeComponent();
+            Headerlable.Content = "MVS FileSync";
             BackupIsActivated = false;
             //Status des Backups und Geräteliste laden und Darstellen
             ReloadState();
@@ -74,7 +77,7 @@ namespace Megalomania_Studios_Filesync
             //CustomMessageBox.header = "messageheader";
             //CMbox.message = "content!!!";
             //CMbox.answer = Answer.OK;
-            CustomMessageBox CMbox = new CustomMessageBox(header, message, "Abbruch", "Nein", "Ja");
+            CustomMessageBox CMbox = new CustomMessageBox(header, message,"OK","Abbruch");
             CMbox.ShowDialog();
 
            
@@ -132,7 +135,8 @@ namespace Megalomania_Studios_Filesync
                 // if something goes wrong, better tell its deactiveted and show a message
                 BackupIsActivated = false;
             //in the future: errorcodehandler-method
-            MessageBox.Show("Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.", "Fehler bei der Erkennung des Backupzustandes");
+            CustomMessageBox CmBox = new CustomMessageBox("Fehler bei der Erkennung des Backupzustandes", "Ein Fehler ist aufgetreten. (Code: 0x00002) Der Status des Backups konnte nicht erkannt werden.");
+            
             return;
         }
         #endregion
@@ -158,6 +162,9 @@ namespace Megalomania_Studios_Filesync
                 catch (IOException ex)
                 {
 #if DEBUG
+                    CustomMessageBox Cmb = new CustomMessageBox("Fehler",ex.ToString(),"OK");
+                    Cmb.ShowDialog();
+
                     MessageBox.Show(ex.ToString());
 #else
                     throw ex;
@@ -273,10 +280,59 @@ namespace Megalomania_Studios_Filesync
         }
         #endregion
 
+        #region MaxButton
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (this.WindowState == WindowState.Normal)
+                {
+                    this.WindowStyle = WindowStyle.ThreeDBorderWindow;
+                    this.WindowState = WindowState.Maximized;
+                    this.WindowStyle = WindowStyle.None;
+
+
+                    this.Maximizerectangle.Fill = Brushes.LightGray;
+                }
+
+                else
+                {
+
+                    this.WindowState = WindowState.Normal;
+                    Maximizerectangle.Fill = null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox cm = new CustomMessageBox("Fehlr", ex.ToString() ,"OK");
+                cm.ShowDialog();
+            }
+
+        }
+
+
+       
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            switch (this.WindowState)
+            {
+                case WindowState.Maximized: Maximizerectangle.Fill = Brushes.LightGray;
+                    break;
+                case WindowState.Normal: Maximizerectangle.Fill = null;
+                    break;
+                default: break;
+            }
+        }
+        #endregion
+
         #region Backupstate Button ((de)activation)
 
         //for starting/stopping the service
-        
+
         private void BackupstateChange_Click(object sender, RoutedEventArgs e)
         {
 
@@ -312,16 +368,19 @@ namespace Megalomania_Studios_Filesync
                 
        
             ServiceController service = new ServiceController("MegalomaniaStudiosFileSyncService");
-            try
-            {
-                TimeSpan timeout = TimeSpan.FromMilliseconds(20000);
+                try
+                {
+                    TimeSpan timeout = TimeSpan.FromMilliseconds(20000);
 
-                service.Stop();
-                service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
-            }
-            catch
-            {
+                    service.Stop();
+                    service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                }
+                catch
+                {
+                    CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Fehler bei der Dienstaktivierung","OK");
+                    Cmb.ShowDialog();
                     MessageBox.Show("fehler bei der Dienstaktivierung");
+
                 }
         
                 return;
@@ -343,7 +402,8 @@ namespace Megalomania_Studios_Filesync
         {
             if (((Devices)Devices.SelectedItem) == null)
             {
-                MessageBox.Show("Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät", "Fehler");
+                CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät.");
+                Cmb.ShowDialog();
                 return;
             }
             else
@@ -381,7 +441,8 @@ namespace Megalomania_Studios_Filesync
         {
             if (((Devices)Devices.SelectedItem) == null)
             {
-                MessageBox.Show("Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät", "Fehler");
+                CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät.");
+                Cmb.ShowDialog();
                 return;
             }
             else
@@ -417,6 +478,7 @@ namespace Megalomania_Studios_Filesync
 #endregion
     
         #region remove button
+
         private void DeletePair_Click(object sender, RoutedEventArgs e)
         {
             if (((Devices)Devices.SelectedItem) == null)
@@ -426,18 +488,21 @@ namespace Megalomania_Studios_Filesync
             }
             else
             {
-                var Boxresult = MessageBox.Show("Das Ordnerpaar wirklich löschen?", "Filesync", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No, MessageBoxOptions.None);
-                if (Boxresult == MessageBoxResult.Yes)
+                CustomMessageBox Cmb = new CustomMessageBox("Filesync", "Das Ordnerpaar wirklich löschen?", "Ja", "Nein");
+                Cmb.ShowDialog();
+                if (Cmb.DialogResult == true)
                 {
                     Foldersource.Remove(((Folders)Folders.SelectedItem));
-                    
-                    
+
+
                     return;
                 }
                 else
-                {                    
+                {
                     return;
                 }
+
+                
             }
         }
         #endregion
@@ -453,6 +518,8 @@ namespace Megalomania_Studios_Filesync
             }
         }
         #endregion
+
+        
 
         #endregion
 
@@ -472,11 +539,13 @@ namespace Megalomania_Studios_Filesync
 
 
 
+
+
+
+
         #endregion
 
        
-
-        
     }
     #endregion
 

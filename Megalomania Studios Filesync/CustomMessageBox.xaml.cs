@@ -19,47 +19,57 @@ namespace Megalomania_Studios_Filesync
     /// </summary>
     public partial class CustomMessageBox : Window
     {
-        public CustomMessageBox(string header, string message, string answerleft, string answermiddle, string answerright)
+
+        #region Constructors
+
+        //standard Messagebox constructor with just an oK-Button
+        public CustomMessageBox(string header, string message)
+        {
+            InitializeComponent();
+            Header.Content = header;
+            Content.Text = message;
+            Bottomleft.Visibility = Visibility.Hidden;
+            Bottommiddle.Visibility = Visibility.Hidden;
+            Bottomright.Content = "OK";
+
+        }
+
+        public CustomMessageBox(string header, string message, string answerright)
+        {
+            InitializeComponent();
+            Header.Content = header;
+            Content.Text = message;
+            Bottomleft.Visibility = Visibility.Hidden;
+            Bottommiddle.Visibility = Visibility.Hidden;
+            Bottomright.Content = answerright;
+        }
+
+        public CustomMessageBox(string header, string message, string answerright, string answermiddle)
+        {
+            InitializeComponent();
+            Header.Content = header;
+            Content.Text = message;
+            Bottomleft.Visibility = Visibility.Hidden;
+            Bottommiddle.Content = answermiddle;
+            Bottomright.Content = answerright;
+        }
+       
+
+        //Messagebox constructor with all arguments
+        public CustomMessageBox(string header, string message, string answerright, string answermiddle, string answerleft)
         {
             InitializeComponent();          
             Header.Content = header;
             Content.Text = message;
-            /*switch (answer)
-            {
-                case Answer.OK:
-                    Bottomright.Visibility = Visibility.Visible;
-                    Bottommiddle.Visibility = Visibility.Hidden;
-                    Bottomleft.Visibility = Visibility.Hidden;
-                    break;
-                case Answer.OKNO:
-                    Bottomright.Visibility = Visibility.Visible;
-                    Bottommiddle.Visibility = Visibility.Visible;
-                    Bottomleft.Visibility = Visibility.Hidden;
-                    break;
-                case Answer.OKNOABORT:
-                    Bottomright.Visibility = Visibility.Visible;
-                    Bottommiddle.Visibility = Visibility.Visible;
-                    Bottomleft.Visibility = Visibility.Visible;
-                    break;
-
-            }*/
-
             Bottomleft.Content = answerleft;
             Bottommiddle.Content = answermiddle;
-            Bottomright.Content = answerright;
-            
+            Bottomright.Content = answerright; 
         }
 
-        public void show(string header, string message, Answer answer)
-        {
-            
-
-
-            
-            
-        }
+        #endregion
 
         #region clickhandlers
+
         private void Bottomleft_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = null;
@@ -68,29 +78,38 @@ namespace Megalomania_Studios_Filesync
 
 
 
-        #endregion
+        
 
         private void Bottommiddle_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
       
-        public Answer answer;
 
         private void Bottomright_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }
-    }
-    public enum Answer
-    {
-        OK = 0,
-        OKNO = 1,
-        OKNOABORT = 2
-          
+
+        #endregion
+
+        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                this.DragMove();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        
     }
 
-   
+
+
 
 
 }

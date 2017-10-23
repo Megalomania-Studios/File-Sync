@@ -21,7 +21,7 @@ namespace MSFileSyncer
 
         #region Main method
         static void Main(string[] args)
-        {
+        {    
             //Drive letter should be first argument
             if (args.Length < 1) throw new ArgumentOutOfRangeException("drive", "No drive letter supplied.");
             driveLetter = args[0];

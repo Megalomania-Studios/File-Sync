@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Megalomania_Studios_Filesync"
         mc:Ignorable="d"
-        Title="CustomMessageBox" Height="200" Width="350" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="#333" AllowsTransparency="True">
+        Title="CustomMessageBox" Height="200" Width="350" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="#333" AllowsTransparency="True" BorderBrush="#222" BorderThickness="2px" Topmost="True" >
     <Window.Resources>
         <!--Template for normal buttons-->
         <Style x:Key="Messboxbuttonstyle" TargetType="Button">
@@ -52,7 +52,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35px"/>
+            <RowDefinition Height="33px"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50px"/>
         </Grid.RowDefinitions>
@@ -61,8 +61,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Name="Header" Foreground="#CCC" FontSize="20" Background="#222" Content="Header:" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Grid.ColumnSpan="3"/>
-        <TextBlock Name="Content" FontSize="15" Text="Dies ist ein Test, ob hier Fehlermeldungen o.ä. dargestellt werden können. Weiterer Test: Lorem ipsum et dolor amet ich weiß nicht was soll es bedeuten, dass ich so traurig bin. Was passiert bei einem Overflow? 'Das muss noch getestet werden." Foreground="#CCC" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="Wrap" Margin="5,5,5,5"/>
+        <Label Name="Header" Foreground="#CCC" FontSize="20" Background="#222" Content="Header:" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Grid.ColumnSpan="3" MouseLeftButtonDown="Header_MouseLeftButtonDown"/>
+        <TextBlock Name="Content" FontSize="15" Text="Error. If this shows up, something went wrong with the Message Box text. Please contact the developers, and let them congratulate you for finding a BIG bug. Thank you!" Foreground="#CCC" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="Wrap" Margin="5,5,5,5"/>
 
         <!--Buttons-->
         <Button Name="Bottomleft" Content="Abbrechen" Grid.Row="2" Grid.Column="0" Style="{StaticResource Messboxbuttonstyle}" Click="Bottomleft_Click"/>
