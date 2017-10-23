@@ -348,7 +348,6 @@ namespace Megalomania_Studios_Filesync
 
                     service.Stop();
                     service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
-                    MessageBox.Show(service.Status.ToString());
                     Backact();
                 }
                 catch(Exception ex)
@@ -367,137 +366,137 @@ namespace Megalomania_Studios_Filesync
         }
 #endregion
     
-#region Device selected
-        private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            Folderact();
-
-        }
-#endregion
-    
-#region Save button
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            if (((Devices)Devices.SelectedItem) == null)
-            {
-                CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät.");
-                Cmb.ShowDialog();
-                return;
-            }
-            else
-            {
-                string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
-                var folders = Folders.ItemsSource;
-                var orders = new List<SyncOrder>();
-                foreach (Folders f in folders)
+        #region Device selected
+                private void Devices_SelectionChanged(object sender, SelectionChangedEventArgs e)
                 {
-                    if (f.OriginFolder == null || f.DestinationFolder == null) continue;
-                    orders.Add(new SyncOrder(f.OriginFolder, f.DestinationFolder, SyncRules.Default));
+
+                    Folderact();
+
                 }
-                var serialized = JsonConvert.SerializeObject(orders);
-                if (!Directory.Exists(Path.Combine(Devicescuritem, relativeSyncFileFolder)))
-                {
-                    var di = Directory.CreateDirectory(Path.Combine(Devicescuritem, relativeSyncFileFolder));
-                    di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-                }
-                File.WriteAllText(Path.Combine(Devicescuritem, relativeSyncFilePath), serialized);
-                Folderact();
-            }
-
-        }
-#endregion
-
-#region reload button
-            private void Reload_Click(object sender, RoutedEventArgs e)
-            {
-                Deviceact();
-            }
-#endregion
+        #endregion
     
-#region add button
-        private void AddNewPair_Click(object sender, RoutedEventArgs e)
-        {
-            if (((Devices)Devices.SelectedItem) == null)
-            {
-                CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät.");
-                Cmb.ShowDialog();
-                return;
-            }
-            else
-            {
-                var driveLetter = ((Devices)Devices.SelectedItem).Name;
-                var folderdialog = new windowsforms.FolderBrowserDialog
+        #region Save button
+                private void Save_Click(object sender, RoutedEventArgs e)
                 {
-                    Description = "Ursprungsordner auswählen"
-                };
-                var result = folderdialog.ShowDialog();
-                if (result != windowsforms.DialogResult.OK) return;
-                string originpath = folderdialog.SelectedPath;
-                folderdialog.Reset();
-                folderdialog.Description = "Zielordner auf dem Backup-Gerät auswählen";
-                folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
-                result = folderdialog.ShowDialog();
-                if (result != windowsforms.DialogResult.OK) return;
-                string destinationpath = folderdialog.SelectedPath;
-                string d = "$d\\";
+                    if (((Devices)Devices.SelectedItem) == null)
+                    {
+                        CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät.");
+                        Cmb.ShowDialog();
+                        return;
+                    }
+                    else
+                    {
+                        string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
+                        var folders = Folders.ItemsSource;
+                        var orders = new List<SyncOrder>();
+                        foreach (Folders f in folders)
+                        {
+                            if (f.OriginFolder == null || f.DestinationFolder == null) continue;
+                            orders.Add(new SyncOrder(f.OriginFolder, f.DestinationFolder, SyncRules.Default));
+                        }
+                        var serialized = JsonConvert.SerializeObject(orders);
+                        if (!Directory.Exists(Path.Combine(Devicescuritem, relativeSyncFileFolder)))
+                        {
+                            var di = Directory.CreateDirectory(Path.Combine(Devicescuritem, relativeSyncFileFolder));
+                            di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                        }
+                        File.WriteAllText(Path.Combine(Devicescuritem, relativeSyncFilePath), serialized);
+                        Folderact();
+                    }
 
-                destinationpath = destinationpath.Replace(driveLetter, d);
-                originpath = originpath.Replace(driveLetter, d);
-                Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath,
-                    SyncTime = SyncType.Always.ToString(), Settings = SyncRules.Default });
-                var message = Foldersource.FirstOrDefault((x) => x.OriginFolder == noFoldersFound);
-                if (message != null) Foldersource.Remove(message);
-                Folders.IsEnabled = true;
+                }
+        #endregion
+
+        #region reload button
+                    private void Reload_Click(object sender, RoutedEventArgs e)
+                    {
+                        ReloadState();
+                    }
+        #endregion
+    
+        #region add button
+                private void AddNewPair_Click(object sender, RoutedEventArgs e)
+                {
+                    if (((Devices)Devices.SelectedItem) == null)
+                    {
+                        CustomMessageBox Cmb = new CustomMessageBox("Fehler", "Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät.");
+                        Cmb.ShowDialog();
+                        return;
+                    }
+                    else
+                    {
+                        var driveLetter = ((Devices)Devices.SelectedItem).Name;
+                        var folderdialog = new windowsforms.FolderBrowserDialog
+                        {
+                            Description = "Ursprungsordner auswählen"
+                        };
+                        var result = folderdialog.ShowDialog();
+                        if (result != windowsforms.DialogResult.OK) return;
+                        string originpath = folderdialog.SelectedPath;
+                        folderdialog.Reset();
+                        folderdialog.Description = "Zielordner auf dem Backup-Gerät auswählen";
+                        folderdialog.RootFolder = Environment.SpecialFolder.MyComputer;
+                        result = folderdialog.ShowDialog();
+                        if (result != windowsforms.DialogResult.OK) return;
+                        string destinationpath = folderdialog.SelectedPath;
+                        string d = "$d\\";
+
+                        destinationpath = destinationpath.Replace(driveLetter, d);
+                        originpath = originpath.Replace(driveLetter, d);
+                        Foldersource.Add(new Folders { OriginFolder = originpath, DestinationFolder = destinationpath,
+                            SyncTime = SyncType.Always.ToString(), Settings = SyncRules.Default });
+                        var message = Foldersource.FirstOrDefault((x) => x.OriginFolder == noFoldersFound);
+                        if (message != null) Foldersource.Remove(message);
+                        Folders.IsEnabled = true;
                 
-            }
+                    }
 
 
-        }
-#endregion
+                }
+        #endregion
     
-#region remove button
+        #region remove button
 
-        private void DeletePair_Click(object sender, RoutedEventArgs e)
-        {
-            if (((Devices)Devices.SelectedItem) == null)
-            {
-                MessageBox.Show("Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät", "Fehler");
-                return;
-            }
-            else
-            {
-                CustomMessageBox Cmb = new CustomMessageBox("Filesync", "Das Ordnerpaar wirklich löschen?", "Ja", "Nein");
-                Cmb.ShowDialog();
-                if (Cmb.DialogResult == true)
+                private void DeletePair_Click(object sender, RoutedEventArgs e)
                 {
-                    Foldersource.Remove(((Folders)Folders.SelectedItem));
+                    if (((Devices)Devices.SelectedItem) == null)
+                    {
+                        MessageBox.Show("Kein Gerät ausgewählt! Bitte wählen sie zunächst ein Gerät", "Fehler");
+                        return;
+                    }
+                    else
+                    {
+                        CustomMessageBox Cmb = new CustomMessageBox("Filesync", "Das Ordnerpaar wirklich löschen?", "Ja", "Nein");
+                        Cmb.ShowDialog();
+                        if (Cmb.DialogResult == true)
+                        {
+                            Foldersource.Remove(((Folders)Folders.SelectedItem));
 
 
-                    return;
-                }
-                else
-                {
-                    return;
-                }
+                            return;
+                        }
+                        else
+                        {
+                            return;
+                        }
 
                 
-            }
-        }
-#endregion
+                    }
+                }
+        #endregion
     
-#region Drag Window
+        #region Drag Window
 
-        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try { this.DragMove(); }
-            catch (Exception ex)
-            {
+                private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+                {
+                    try { this.DragMove(); }
+                    catch (Exception ex)
+                    {
 
-            }
-        }
-#endregion
-
+                    }
+                }
+        #endregion
+            
         
 
 #endregion
