@@ -94,9 +94,15 @@ namespace Megalomania_Studios_Filesync
         public void Backact()
         {
 
-            
-            ServiceController sc = new ServiceController("MegalomaniaStudiosFileSyncService");
-            string isactivated = sc.Status.ToString();
+            try
+            {
+                ServiceController sc = new ServiceController("MegalomaniaStudiosFileSyncService");
+                isactivated = sc.Status.ToString();
+            }
+            catch(Exception ex)
+            {
+                isactivated = "Stopped";
+            }
 
             if (isactivated == "Running")
             {
@@ -182,52 +188,64 @@ namespace Megalomania_Studios_Filesync
             {
 
                 string Devicescuritem = ((Devices)Devices.SelectedItem).Name;
-
                 string dir = Path.Combine(Devicescuritem, ".mvsfilesync\\");
-                if (!Directory.Exists(dir))
-                {
-                    var dirInfo = Directory.CreateDirectory(dir);
-                    dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-                }
 
-                if (!File.Exists(Path.Combine(Devicescuritem, relativeSyncFilePath)))
-                {
-                    Folders.IsEnabled = false;
-                    
-                    Foldersource.Clear();
-
-                    Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
-                    
-                    return;
-                }
-                else
+                try
                 {
 
-                    
 
-                    Foldersource.Clear();
-                    string folders = File.ReadAllText(Path.Combine(Devicescuritem + relativeSyncFilePath));
-
-                    if (folders == "[]")
+                    if (!Directory.Exists(dir))
                     {
-                        Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
-                        Folders.IsEnabled = false;
-                        return;
+                        var dirInfo = Directory.CreateDirectory(dir);
+                        dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                    }
 
+                    if (!File.Exists(Path.Combine(Devicescuritem, relativeSyncFilePath)))
+                    {
+                        Folders.IsEnabled = false;
+
+                        Foldersource.Clear();
+
+                        Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
+
+                        return;
                     }
 
                     else
                     {
-                        Folders.IsEnabled = true;
 
-                        var list = JsonConvert.DeserializeObject<List<SyncOrder>>(folders);
 
-                        foreach (var f in list)
+
+                        Foldersource.Clear();
+                        string folders = File.ReadAllText(Path.Combine(Devicescuritem + relativeSyncFilePath));
+
+                        if (folders == "[]")
                         {
-                            Foldersource.Add(f);
+                            Foldersource.Add(new Folders() { OriginFolder = noFoldersFound });
+                            Folders.IsEnabled = false;
+                            return;
+
                         }
-                        return;
+
+                        else
+                        {
+                            Folders.IsEnabled = true;
+
+                            var list = JsonConvert.DeserializeObject<List<SyncOrder>>(folders);
+
+                            foreach (var f in list)
+                            {
+                                Foldersource.Add(f);
+                            }
+                            return;
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    Devices.UnselectAll();
+                    CustomMessageBox c = new CustomMessageBox("Zugriffsfehler", "Beim Zugriff auf das Laufwerk ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass auf das Laufwerk zugegriffen und geschrieben werden kann.");
+                    c.ShowDialog();
                 }
             }
         }
@@ -512,6 +530,8 @@ namespace Megalomania_Studios_Filesync
         private const string relativeSyncFileFolder = ".mvsfilesync\\";
 
         public bool Foldersactivated = false;
+
+        private string isactivated;
 
 
 #endregion
